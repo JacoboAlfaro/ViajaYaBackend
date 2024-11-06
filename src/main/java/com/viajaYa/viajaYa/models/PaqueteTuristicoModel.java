@@ -1,4 +1,4 @@
-package com.viajaYa.viajaYa.modelos;
+package com.viajaYa.viajaYa.models;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "paquete_turistico")
-public class PaqueteTuristico {
+public class PaqueteTuristicoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

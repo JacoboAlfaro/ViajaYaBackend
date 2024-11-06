@@ -1,7 +1,8 @@
-package com.viajaYa.viajaYa.servicios;
+package com.viajaYa.viajaYa.services;
 
-import com.viajaYa.viajaYa.modelos.PaqueteTuristico;
-import com.viajaYa.viajaYa.repositorios.IPaqueteTuristicoRepository;
+import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
+import com.viajaYa.viajaYa.repositories.IPaqueteTuristicoRepository;
+import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,29 +10,29 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class PaqueteTuristicoService implements IPaqueteTuristicoService{
+public class PaqueteTuristicoService implements IPaqueteTuristicoService {
 
     @Autowired
     IPaqueteTuristicoRepository paqueteTuristicoRepository;
 
     @Override
-    public ArrayList<PaqueteTuristico> getPaquetes(){
-        return (ArrayList<PaqueteTuristico>) paqueteTuristicoRepository.findAll();
+    public ArrayList<PaqueteTuristicoModel> getPaquetes(){
+        return (ArrayList<PaqueteTuristicoModel>) paqueteTuristicoRepository.findAll();
     }
 
     @Override
-    public Optional<PaqueteTuristico> getByid(int id){
+    public Optional<PaqueteTuristicoModel> getByid(int id){
         return paqueteTuristicoRepository.findById(id);
     }
 
     @Override
-    public PaqueteTuristico savePaqueteTuristico(PaqueteTuristico paquete){
+    public PaqueteTuristicoModel savePaqueteTuristico(PaqueteTuristicoModel paquete){
         return paqueteTuristicoRepository.save(paquete);
     }
 
     @Override
-    public PaqueteTuristico updateById(PaqueteTuristico request, int id){
-        PaqueteTuristico paquete = paqueteTuristicoRepository.findById(id).get();
+    public PaqueteTuristicoModel updateById(PaqueteTuristicoModel request, int id){
+        PaqueteTuristicoModel paquete = paqueteTuristicoRepository.findById(id).get();
         paquete.setNombrePaquete(request.getNombrePaquete());
         paquete.setDestino(request.getDestino());
         paquete.setPrecio(request.getPrecio());

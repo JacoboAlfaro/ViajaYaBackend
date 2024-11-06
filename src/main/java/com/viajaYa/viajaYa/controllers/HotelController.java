@@ -1,7 +1,7 @@
 package com.viajaYa.viajaYa.controllers;
 
-import com.viajaYa.viajaYa.models.HotelModelo;
-import com.viajaYa.viajaYa.services.HotelServicio;
+import com.viajaYa.viajaYa.models.HotelModel;
+import com.viajaYa.viajaYa.services.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,29 +10,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/hotel")
-public class HotelControlador {
+public class HotelController {
 
     @Autowired
-    private HotelServicio hotelServicio;
+    private HotelService hotelServicio;
 
     @GetMapping("/getHoteles")
-    public ArrayList<HotelModelo> getHoteles(){
+    public ArrayList<HotelModel> getHoteles(){
         return this.hotelServicio.getHotel();
     }
 
     @PostMapping("/saveHotel")
-    public HotelModelo saveHotel(@RequestBody HotelModelo hotel){
+    public HotelModel saveHotel(@RequestBody HotelModel hotel){
         return this.hotelServicio.saveHotel(hotel);
     }
 
 
     @GetMapping("/getHotel/{id}")
-    public Optional<HotelModelo> getHotelId(@PathVariable("id") Long id){
+    public Optional<HotelModel> getHotelId(@PathVariable("id") Long id){
         return this.hotelServicio.getHotelId(id);
     }
 
     @PutMapping("/updateHotel/{id}")
-    public HotelModelo updateHotelId(@RequestBody HotelModelo request, @PathVariable("id") Long id){
+    public HotelModel updateHotelId(@RequestBody HotelModel request, @PathVariable("id") Long id){
         return this.hotelServicio.updateHotelId(request, id);
     }
 

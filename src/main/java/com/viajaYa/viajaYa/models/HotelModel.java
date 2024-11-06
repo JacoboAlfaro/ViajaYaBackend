@@ -2,11 +2,9 @@ package com.viajaYa.viajaYa.models;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
 @Table(name = "hotel")
-public class HotelModelo {
+public class HotelModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
