@@ -1,14 +1,11 @@
 package com.viajaYa.viajaYa.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "vuelo")
@@ -28,6 +25,10 @@ public class VueloModel {
     @Enumerated(EnumType.STRING)
     private ClaseServicio claseServicio; // enum  {ECONOMICA, PREMIUM, BUSISNESS}
     private boolean equipaje;
+
+    @OneToMany(mappedBy = "vuelo", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<PaqueteTuristicoModel> paquetesTuristicos;
 
     public Long getId() {
         return id;
@@ -94,5 +95,11 @@ public class VueloModel {
     }
     public void setEquipaje(boolean equipaje) {
         this.equipaje = equipaje;
+    }
+    public List<PaqueteTuristicoModel> getPaquetesTuristicos() {
+        return paquetesTuristicos;
+    }
+    public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
+        this.paquetesTuristicos = paquetesTuristicos;
     }
 }

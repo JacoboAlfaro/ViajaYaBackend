@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.viajaYa.viajaYa.models.VueloModel;
-import com.viajaYa.viajaYa.services.interfaces.IVueloServices;
+import com.viajaYa.viajaYa.services.interfaces.IVueloService;
 
 @RestController
 @RequestMapping(path = "vuelos")
 public class VueloController { 
 
     @Autowired
-    private IVueloServices vueloServices;
+    private IVueloService vueloServices;
 
     @GetMapping
     public ArrayList<VueloModel> getVuelos(){

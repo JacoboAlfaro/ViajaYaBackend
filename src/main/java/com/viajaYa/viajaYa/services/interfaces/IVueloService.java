@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.viajaYa.viajaYa.models.VueloModel;
 
-public interface IVueloServices {
+public interface IVueloService {
     public ArrayList<VueloModel> getVuelos();
     public VueloModel saveVuelo(VueloModel vuelo);
     public Optional<VueloModel> getVueloById(Long id);

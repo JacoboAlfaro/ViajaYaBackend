@@ -1,46 +1,19 @@
-package com.viajaYa.viajaYa.models;
+package com.viajaYa.viajaYa.models.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "paquete_turistico")
-public class PaqueteTuristicoModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
+public class PaqueteTuristicoDTO {
     private String nombrePaquete;
-    @Column
     private String destino;
-    @Column
     private float precio;
-    @Column
     private String serviciosIncluidos;
-    @Column
     private Date fechaSalida;
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "id_vuelo", nullable = true)
-    private VueloModel vuelo;
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "id_hotel", nullable = true)
-    private HotelModel hotel;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @JsonProperty("idVuelo")
+    private Long idVuelo;
+    @JsonProperty("idHotel")
+    private Long idHotel;
 
     public String getNombrePaquete() {
         return nombrePaquete;
@@ -82,19 +55,19 @@ public class PaqueteTuristicoModel {
         this.fechaSalida = fechaSalida;
     }
 
-    public VueloModel getVuelo() {
-        return vuelo;
+    public Long getIdVuelo() {
+        return idVuelo;
     }
 
-    public void setVuelo(VueloModel vuelo) {
-        this.vuelo = vuelo;
+    public void setIdVuelo(Long idVuelo) {
+        this.idVuelo = idVuelo;
     }
 
-    public HotelModel getHotel() {
-        return hotel;
+    public Long getIdHotel() {
+        return idHotel;
     }
 
-    public void setHotel(HotelModel hotel) {
-        this.hotel = hotel;
+    public void setIdHotel(Long idHotel) {
+        this.idHotel = idHotel;
     }
 }

@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.viajaYa.viajaYa.models.VueloModel;
 import com.viajaYa.viajaYa.repositories.IVueloRepository;
-import com.viajaYa.viajaYa.services.interfaces.IVueloServices;
+import com.viajaYa.viajaYa.services.interfaces.IVueloService;
 
 @Service
-public class VueloServices implements IVueloServices {
+public class VueloService implements IVueloService {
     @Autowired
     IVueloRepository vueloRepository;
 
