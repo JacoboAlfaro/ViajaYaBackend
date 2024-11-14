@@ -1,54 +1,56 @@
 package com.viajaYa.viajaYa.controllers;
 
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.viajaYa.viajaYa.models.VueloModel;
+import com.viajaYa.viajaYa.models.dtos.VueloDTO;
 import com.viajaYa.viajaYa.services.interfaces.IVueloService;
+import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 
 @RestController
-@RequestMapping(path = "vuelos")
+@RequestMapping(path = "vuelo")
 public class VueloController { 
 
     @Autowired
-    private IVueloService vueloServices;
+    private IVueloService vueloService;
 
     @GetMapping
-    public ArrayList<VueloModel> getVuelos(){
-        return this.vueloServices.getVuelos();
-    }
-
-    @PostMapping
-    public VueloModel saveVuelo(@RequestBody VueloModel vuelo){
-        return this.vueloServices.saveVuelo(vuelo);
+    public ResponseEntity<ApiResponse<List<VueloModel>>> getVuelos(){
+        List<VueloModel> vuelos = this.vueloService.getVuelos();
+        ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelos);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
-    public Optional<VueloModel> getVueloById(@PathVariable("id") Long id){
-        return this.vueloServices.getVueloById(id);
+    public ResponseEntity<ApiResponse<VueloModel>> getVueloById(@PathVariable("id") Long id){
+        Optional<VueloModel> vuelo = this.vueloService.getVueloById(id);
+        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo.get());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<VueloModel>> saveVuelo(@RequestBody VueloDTO request){
+        VueloModel vuelo = this.vueloService.saveVuelo(request);
+        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+        return ResponseEntity.ok(response);
     }
     
-    @PutMapping(path = "/{id}")
-    public VueloModel updateVueloById(@RequestBody VueloModel request, @PathVariable("id") Long id){
-        return this.vueloServices.updateVueloById(request, id);
+    @PutMapping(path = "/{id}") 
+    public ResponseEntity<ApiResponse<VueloModel>> updateVueloById(@RequestBody VueloDTO request, @PathVariable("id") Long id){
+        VueloModel vueloActualizado = this.vueloService.updateVueloById(request, id);
+        ApiResponse<VueloModel> response = new ApiResponse<>(vueloActualizado);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(path = "/{id}")
-        public String deleteVueloById(@PathVariable("id") Long id){
-            boolean ok = this.vueloServices.deleteVueloById(id);
-            if (ok){
-                return "Se borro el vuelo con id " + id;
-            } else {
-                return "No se pudo borrar el vuelo con id " + id;
-            }
-        }
+    public ResponseEntity<ApiResponse<String>> deleteVueloById(@PathVariable("id") Long id){
+        @SuppressWarnings("unused")
+        boolean respuesta = this.vueloService.deleteVueloById(id);
+        ApiResponse<String> response = new ApiResponse<>("Se borro el vuelo con id " + id);
+        return ResponseEntity.ok(response);
+    }
 }
