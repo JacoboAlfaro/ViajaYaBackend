@@ -1,7 +1,6 @@
 package com.viajaYa.viajaYa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -26,6 +25,16 @@ public class HotelModel {
     @JsonBackReference
     private List<PaqueteTuristicoModel> paquetesTuristicos;
 
+    @ManyToMany
+    @JsonBackReference
+    @JoinTable(
+            name = "hotel_servicio_adicional",
+            joinColumns = @JoinColumn(name = "id_hotel"),
+            inverseJoinColumns = @JoinColumn(name = "id_servicio")
+    )
+    private List<ServicioAdicionalModel> serviciosAdicionales;
+
+    //Getters Y Setters
     public long getId() {
         return id;
     }
@@ -96,5 +105,13 @@ public class HotelModel {
 
     public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
         this.paquetesTuristicos = paquetesTuristicos;
+    }
+
+    public List<ServicioAdicionalModel> getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+
+    public void setServiciosAdicionales(List<ServicioAdicionalModel> serviciosAdicionales) {
+        this.serviciosAdicionales = serviciosAdicionales;
     }
 }

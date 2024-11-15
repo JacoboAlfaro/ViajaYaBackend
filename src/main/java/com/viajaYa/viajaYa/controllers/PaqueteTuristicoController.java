@@ -2,6 +2,7 @@ package com.viajaYa.viajaYa.controllers;
 
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
+import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,16 @@ public class PaqueteTuristicoController {
     private IPaqueteTuristicoService paqueteTuristicoService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaquetesTuristicos(){
-        List<PaqueteTuristicoModel> paquetes = this.paqueteTuristicoService.getPaquetes();
-        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquetes);
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaquetesTuristicos(){
+        List<PaqueteTuristicoResponseDTO> paquetes = this.paqueteTuristicoService.getPaquetes();
+        ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(paquetes);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ApiResponse<PaqueteTuristicoModel>> getPaqueteTuristico(@PathVariable("id") Long id){
-        PaqueteTuristicoModel paquete = this.paqueteTuristicoService.getByid(id).get();
-        ApiResponse<PaqueteTuristicoModel> response = new ApiResponse<>(paquete);
+    public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> getPaqueteTuristico(@PathVariable("id") Long id){
+        PaqueteTuristicoResponseDTO paquete = this.paqueteTuristicoService.getByid(id).get();
+        ApiResponse<PaqueteTuristicoResponseDTO> response = new ApiResponse<>(paquete);
         return ResponseEntity.ok(response);
     }
 
@@ -50,7 +51,7 @@ public class PaqueteTuristicoController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<ApiResponse<String>> deletePaqueteTuristico(@PathVariable("id") Long id){
         boolean respuesta = this.paqueteTuristicoService.deletePaquete(id);
-        ApiResponse<String> response = new ApiResponse<>("Se borro el paquete con id " + id);
+        ApiResponse<String> response = new ApiResponse<>("Se borró el paquete con id " + id);
         return ResponseEntity.ok(response);
     }
 }

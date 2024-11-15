@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.viajaYa.viajaYa.models.enums.ClaseServicio;
 import jakarta.persistence.*;
 
 @Entity
@@ -29,6 +29,15 @@ public class VueloModel {
     @OneToMany(mappedBy = "vuelo", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<PaqueteTuristicoModel> paquetesTuristicos;
+
+    @ManyToMany
+    @JsonBackReference
+    @JoinTable(
+            name = "vuelo_servicio_adicional",
+            joinColumns = @JoinColumn(name = "id_vuelo"),
+            inverseJoinColumns = @JoinColumn(name = "id_servicio")
+    )
+    private List<ServicioAdicionalModel> serviciosAdicionales;
 
     public Long getId() {
         return id;

@@ -1,21 +1,20 @@
 package com.viajaYa.viajaYa.models.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
-@Setter @Getter
-public class PaqueteTuristicoDTO {
+@Getter @Setter
+public class PaqueteTuristicoResponseDTO {
     private Long id;
     private String nombrePaquete;
     private String destino;
     private float precio;
     private String serviciosIncluidos;
     private Date fechaSalida;
-    @JsonProperty("idVuelo")
     private Long idVuelo;
-    @JsonProperty("idHotel")
     private Long idHotel;
+    private List<ServicioAdicionalRequestDTO> serviciosAdicionales;
 }

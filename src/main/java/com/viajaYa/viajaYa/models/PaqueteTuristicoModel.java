@@ -1,10 +1,10 @@
 package com.viajaYa.viajaYa.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "paquete_turistico")
@@ -24,16 +24,27 @@ public class PaqueteTuristicoModel {
     private String serviciosIncluidos;
     @Column
     private Date fechaSalida;
+
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "id_vuelo", nullable = true)
     private VueloModel vuelo;
+
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "id_hotel", nullable = true)
     private HotelModel hotel;
 
+    @ManyToMany
+    @JoinTable(
+            name = "paquete_servicio_adicional",
+            joinColumns = @JoinColumn(name = "id_paquete"),
+            inverseJoinColumns = @JoinColumn(name = "id_servicio")
+    )
+    private List<ServicioAdicionalModel> serviciosAdicionales;
 
+
+    //Getters y setters
     public Long getId() {
         return id;
     }
@@ -96,5 +107,13 @@ public class PaqueteTuristicoModel {
 
     public void setHotel(HotelModel hotel) {
         this.hotel = hotel;
+    }
+
+    public List<ServicioAdicionalModel> getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+
+    public void setServiciosAdicionales(List<ServicioAdicionalModel> serviciosAdicionales) {
+        this.serviciosAdicionales = serviciosAdicionales;
     }
 }

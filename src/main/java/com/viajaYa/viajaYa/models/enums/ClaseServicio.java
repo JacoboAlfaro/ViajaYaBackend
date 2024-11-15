@@ -1,4 +1,4 @@
-package com.viajaYa.viajaYa.models;
+package com.viajaYa.viajaYa.models.enums;
 
 public enum ClaseServicio {
     economica, premium, busisness

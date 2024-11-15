@@ -2,16 +2,24 @@ package com.viajaYa.viajaYa.services.mappers;
 
 import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
+import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
 import com.viajaYa.viajaYa.models.VueloModel;
-import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
+import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
+import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalRequestDTO;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IVueloService;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
-public class PaqueteTuristicoDTOMapper implements IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> {
+public class PaqueteTuristicoResponseDTOMapper implements IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> {
+
+    @Autowired
+    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalModel> servicioAdicionalDTOMapper;
 
     @Autowired
     private IVueloService vueloService;
@@ -19,8 +27,9 @@ public class PaqueteTuristicoDTOMapper implements IMapper<PaqueteTuristicoDTO, P
     @Autowired
     private IHotelService hotelService;
 
+
     @Override
-    public PaqueteTuristicoModel toEntity(PaqueteTuristicoDTO dto) {
+    public PaqueteTuristicoModel toEntity(PaqueteTuristicoResponseDTO dto) {
         PaqueteTuristicoModel paquete = new PaqueteTuristicoModel();
         paquete.setId(dto.getId());
         paquete.setNombrePaquete(dto.getNombrePaquete());
@@ -36,8 +45,8 @@ public class PaqueteTuristicoDTOMapper implements IMapper<PaqueteTuristicoDTO, P
     }
 
     @Override
-    public PaqueteTuristicoDTO toDto(PaqueteTuristicoModel model) {
-        PaqueteTuristicoDTO dto = new PaqueteTuristicoDTO();
+    public PaqueteTuristicoResponseDTO toDto(PaqueteTuristicoModel model) {
+        PaqueteTuristicoResponseDTO dto = new PaqueteTuristicoResponseDTO();
         dto.setId(model.getId());
         dto.setNombrePaquete(model.getNombrePaquete());
         dto.setDestino(model.getDestino());
@@ -50,6 +59,11 @@ public class PaqueteTuristicoDTOMapper implements IMapper<PaqueteTuristicoDTO, P
         if (model.getHotel() != null) {
             dto.setIdHotel(model.getHotel().getId());
         }
+
+        List<ServicioAdicionalRequestDTO> servicios = model.getServiciosAdicionales().stream()
+                .map(servicioAdicionalDTOMapper::toDto)
+                .collect(Collectors.toList());
+        dto.setServiciosAdicionales(servicios);
         return dto;
     }
 

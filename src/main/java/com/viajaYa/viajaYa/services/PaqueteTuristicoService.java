@@ -4,6 +4,7 @@ import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.VueloModel;
+import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.repositories.IPaqueteTuristicoRepository;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
@@ -27,19 +28,24 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService {
     IVueloService vueloService;
     @Autowired
     IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> mapper;
+    @Autowired
+    IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> responseMapper;
 
     @Override
-    public ArrayList<PaqueteTuristicoModel> getPaquetes(){
-         return (ArrayList<PaqueteTuristicoModel>) paqueteTuristicoRepository.findAll();
+    public ArrayList<PaqueteTuristicoResponseDTO> getPaquetes(){
+        ArrayList<PaqueteTuristicoModel> paquetes = (ArrayList<PaqueteTuristicoModel>) paqueteTuristicoRepository.findAll();
+        return paquetes.stream()
+                .map(responseMapper::toDto)
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     @Override
-    public Optional<PaqueteTuristicoModel> getByid(Long id){
+    public Optional<PaqueteTuristicoResponseDTO> getByid(Long id){
         Optional<PaqueteTuristicoModel> paquete = paqueteTuristicoRepository.findById(id);
         if(paquete.isEmpty()){
             throw new BusinessException("Paquete turistico con id " + id + " no encontrado");
         }
-        return paquete;
+        return paquete.map(responseMapper::toDto);
     }
 
     @Override
