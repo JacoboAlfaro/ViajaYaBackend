@@ -1,7 +1,7 @@
 package com.viajaYa.viajaYa.models.dtos;
 
 import java.time.LocalDateTime;
-import com.viajaYa.viajaYa.models.ClaseServicio;
+import com.viajaYa.viajaYa.models.enums.ClaseServicio;
 
 public class VueloDTO {
     private String numVuelo;
