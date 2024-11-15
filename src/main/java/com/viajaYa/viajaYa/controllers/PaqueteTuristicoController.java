@@ -50,6 +50,7 @@ public class PaqueteTuristicoController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<ApiResponse<String>> deletePaqueteTuristico(@PathVariable("id") Long id){
+        @SuppressWarnings("unused")
         boolean respuesta = this.paqueteTuristicoService.deletePaquete(id);
         ApiResponse<String> response = new ApiResponse<>("Se borró el paquete con id " + id);
         return ResponseEntity.ok(response);

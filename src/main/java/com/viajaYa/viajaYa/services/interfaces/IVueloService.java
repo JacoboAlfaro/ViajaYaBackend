@@ -3,12 +3,13 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import com.viajaYa.viajaYa.models.VueloModel;
+import com.viajaYa.viajaYa.models.dtos.VueloDTO;
 
 public interface IVueloService {
     public ArrayList<VueloModel> getVuelos();
-    public VueloModel saveVuelo(VueloModel vuelo);
+    public VueloModel saveVuelo(VueloDTO dto);
     public Optional<VueloModel> getVueloById(Long id);
-    public VueloModel updateVueloById(VueloModel request,Long id);
+    public VueloModel updateVueloById(VueloDTO vuelo, Long id);
     public boolean deleteVueloById(Long id);
 
 }

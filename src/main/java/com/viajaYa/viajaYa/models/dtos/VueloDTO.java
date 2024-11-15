@@ -1,20 +1,9 @@
-package com.viajaYa.viajaYa.models;
+package com.viajaYa.viajaYa.models.dtos;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import com.viajaYa.viajaYa.models.ClaseServicio;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.viajaYa.viajaYa.models.enums.ClaseServicio;
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "vuelo")
-public class VueloModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
+public class VueloDTO {
     private String numVuelo;
     private String aerolinea;
     private String origen;
@@ -22,30 +11,10 @@ public class VueloModel {
     private LocalDateTime fechaHoraSalida;
     private int numEscalas;
     private String modeloAvion;
-    private float precio;
-    @Enumerated(EnumType.STRING)
-    private ClaseServicio claseServicio; // enum  {ECONOMICA, PREMIUM, BUSISNESS}
+    private float precio;    
+    private ClaseServicio claseServicio;
     private boolean equipaje;
-
-    @OneToMany(mappedBy = "vuelo", fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<PaqueteTuristicoModel> paquetesTuristicos;
-
-    @ManyToMany
-    @JsonBackReference
-    @JoinTable(
-            name = "vuelo_servicio_adicional",
-            joinColumns = @JoinColumn(name = "id_vuelo"),
-            inverseJoinColumns = @JoinColumn(name = "id_servicio")
-    )
-    private List<ServicioAdicionalModel> serviciosAdicionales;
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
     public String getNumVuelo() {
         return numVuelo;
     }
@@ -106,10 +75,6 @@ public class VueloModel {
     public void setEquipaje(boolean equipaje) {
         this.equipaje = equipaje;
     }
-    public List<PaqueteTuristicoModel> getPaquetesTuristicos() {
-        return paquetesTuristicos;
-    }
-    public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
-        this.paquetesTuristicos = paquetesTuristicos;
-    }
+
+    
 }
