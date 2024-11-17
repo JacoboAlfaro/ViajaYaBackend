@@ -1,12 +1,21 @@
 package com.viajaYa.viajaYa.services.mappers;
 
+import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
+import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.viajaYa.viajaYa.models.VueloModel;
 import com.viajaYa.viajaYa.models.dtos.VueloDTO;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class VueloDTOMapper implements IMapper<VueloDTO, VueloModel> {
+
+    @Autowired
+    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalModel> servicioAdicionalDTOMapper;
 
     @Override
     public VueloModel toEntity(VueloDTO dto) {
@@ -37,6 +46,10 @@ public class VueloDTOMapper implements IMapper<VueloDTO, VueloModel> {
         dto.setPrecio(model.getPrecio());
         dto.setClaseServicio(model.getClaseServicio());
         dto.setEquipaje(model.isEquipaje());
+        List<ServicioAdicionalRequestDTO> servicios = model.getServiciosAdicionales().stream()
+                .map(servicioAdicionalDTOMapper::toDto)
+                .collect(Collectors.toList());
+        dto.setServiciosAdicionales(servicios);
         return dto;
     }
 }

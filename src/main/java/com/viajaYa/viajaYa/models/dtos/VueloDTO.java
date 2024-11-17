@@ -1,6 +1,8 @@
 package com.viajaYa.viajaYa.models.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import com.viajaYa.viajaYa.models.enums.ClaseServicio;
 
 public class VueloDTO {
@@ -14,6 +16,8 @@ public class VueloDTO {
     private float precio;    
     private ClaseServicio claseServicio;
     private boolean equipaje;
+    private List<ServicioAdicionalRequestDTO> serviciosAdicionales;
+
     
     public String getNumVuelo() {
         return numVuelo;
@@ -75,6 +79,10 @@ public class VueloDTO {
     public void setEquipaje(boolean equipaje) {
         this.equipaje = equipaje;
     }
-
-    
+    public List<ServicioAdicionalRequestDTO> getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+    public void setServiciosAdicionales(List<ServicioAdicionalRequestDTO> serviciosAdicionales) {
+        this.serviciosAdicionales = serviciosAdicionales;
+    }
 }

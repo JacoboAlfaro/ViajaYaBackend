@@ -1,16 +1,20 @@
 package com.viajaYa.viajaYa.services;
 
+import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.VueloModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.repositories.IPaqueteTuristicoRepository;
+import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
+import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.interfaces.IVueloService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class PaqueteTuristicoService implements IPaqueteTuristicoService {
+public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProductoServicioService<PaqueteTuristicoResponseDTO> {
 
     @Autowired
     IPaqueteTuristicoRepository paqueteTuristicoRepository;
+    @Autowired
+    IServicioAdicionalRepository servicioAdicionalRepository;
     @Autowired
     IHotelService hotelService;
     @Autowired
@@ -90,5 +96,45 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService {
         }
         paqueteTuristicoRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    @Transactional
+    public PaqueteTuristicoResponseDTO addServicioAdicional(Long idPaquete, Long idServicio){
+        PaqueteTuristicoModel paquete = obtenerProdcutoConServicio(idPaquete, idServicio);
+
+        if (paquete.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
+            throw new BusinessException("El servicio adicional con id " + idServicio + " ya se encuentra en el paquete turístico");
+        }
+        paquete.getServiciosAdicionales().add(servicioAdicionalRepository.getReferenceById(idServicio));
+
+        PaqueteTuristicoModel paqueteNuevo = paqueteTuristicoRepository.save(paquete);
+        return responseMapper.toDto(paqueteNuevo);
+    }
+
+    @Override
+    @Transactional
+    public PaqueteTuristicoResponseDTO removeServicioAdicional(Long idPaquete, Long idServicio) {
+        PaqueteTuristicoModel paquete = obtenerProdcutoConServicio(idPaquete, idServicio);
+
+        if (!paquete.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
+            throw new BusinessException("El servicio adicional con id " + idServicio + " no está asociado al paquete turístico");
+        }
+        paquete.getServiciosAdicionales().remove(servicioAdicionalRepository.getReferenceById(idServicio));
+
+        PaqueteTuristicoModel paqueteNuevo = paqueteTuristicoRepository.save(paquete);
+        return responseMapper.toDto(paqueteNuevo);
+    }
+
+    /*Metodo privado para obtener un paquete turistico con un servicio adicional
+    [Aplicacion de los principio DRY Y KISS] */
+    private PaqueteTuristicoModel obtenerProdcutoConServicio(Long idPaquete, Long idServicio) {
+        PaqueteTuristicoModel paquete = paqueteTuristicoRepository.findById(idPaquete)
+                .orElseThrow(() -> new BusinessException("Paquete turístico con id " + idPaquete + " no encontrado"));
+
+        if (!servicioAdicionalRepository.existsById(idServicio)) {
+            throw new BusinessException("Servicio adicional con id " + idServicio + " no encontrado");
+        }
+        return paquete;
     }
 }

@@ -111,4 +111,12 @@ public class VueloModel {
     public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
         this.paquetesTuristicos = paquetesTuristicos;
     }
+
+    public List<ServicioAdicionalModel> getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+
+    public void setServiciosAdicionales(List<ServicioAdicionalModel> serviciosAdicionales) {
+        this.serviciosAdicionales = serviciosAdicionales;
+    }
 }

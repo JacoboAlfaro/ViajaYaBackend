@@ -2,6 +2,12 @@ package com.viajaYa.viajaYa.services;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
+import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
+import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
+import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +19,13 @@ import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 
 @Service
-public class VueloService implements IVueloService {
+public class VueloService implements IVueloService, IProductoServicioService<VueloDTO> {
 
     @Autowired
     IVueloRepository vueloRepository;
+
+    @Autowired
+    IServicioAdicionalRepository servicioAdicionalRepository;
 
     @Autowired
     IMapper<VueloDTO, VueloModel> mapper;
@@ -65,5 +74,45 @@ public class VueloService implements IVueloService {
         }
         vueloRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    @Transactional
+    public VueloDTO addServicioAdicional(Long idVuelo, Long idServicio){
+        VueloModel vuelo = obtenerProdcutoConServicio(idVuelo, idServicio);
+
+        if (vuelo.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
+            throw new BusinessException("El servicio adicional con id " + idServicio + " ya se encuentra en el vuelo");
+        }
+        vuelo.getServiciosAdicionales().add(servicioAdicionalRepository.getReferenceById(idServicio));
+
+        VueloModel vueloNuevo = vueloRepository.save(vuelo);
+        return mapper.toDto(vueloNuevo);
+    }
+
+    @Override
+    @Transactional
+    public VueloDTO removeServicioAdicional(Long idVuelo, Long idServicio) {
+        VueloModel vuelo = obtenerProdcutoConServicio(idVuelo, idServicio);
+
+        if (!vuelo.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
+            throw new BusinessException("El servicio adicional con id " + idServicio + " no está asociado al vuelo");
+        }
+        vuelo.getServiciosAdicionales().remove(servicioAdicionalRepository.getReferenceById(idServicio));
+
+        VueloModel vueloNuevo = vueloRepository.save(vuelo);
+        return mapper.toDto(vueloNuevo);
+    }
+
+    /*Metodo privado para obtener un paquete turistico con un servicio adicional
+    [Aplicacion de los principio DRY Y KISS] */
+    private VueloModel obtenerProdcutoConServicio(Long idVuelo, Long idServicio) {
+        VueloModel vuelo = vueloRepository.findById(idVuelo)
+                .orElseThrow(() -> new BusinessException("Vuelo con id " + idVuelo + " no encontrado"));
+
+        if (!servicioAdicionalRepository.existsById(idServicio)) {
+            throw new BusinessException("Servicio adicional con id " + idServicio + " no encontrado");
+        }
+        return vuelo;
     }
 }

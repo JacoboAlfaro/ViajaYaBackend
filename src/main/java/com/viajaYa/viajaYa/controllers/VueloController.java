@@ -3,6 +3,10 @@ package com.viajaYa.viajaYa.controllers;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
+import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
+import com.viajaYa.viajaYa.services.mappers.IMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,10 @@ public class VueloController {
 
     @Autowired
     private IVueloService vueloService;
+    @Autowired
+    private IProductoServicioService<VueloDTO> productoServicioService;
+    @Autowired
+    IMapper<VueloDTO, VueloModel> mapper;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<VueloModel>>> getVuelos(){
@@ -26,9 +34,9 @@ public class VueloController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ApiResponse<VueloModel>> getVueloById(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponse<VueloDTO>> getVueloById(@PathVariable("id") Long id){
         Optional<VueloModel> vuelo = this.vueloService.getVueloById(id);
-        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo.get());
+        ApiResponse<VueloDTO> response = new ApiResponse<>(vuelo.map(mapper::toDto).get());
         return ResponseEntity.ok(response);
     }
 
@@ -51,6 +59,22 @@ public class VueloController {
         @SuppressWarnings("unused")
         boolean respuesta = this.vueloService.deleteVueloById(id);
         ApiResponse<String> response = new ApiResponse<>("Se borro el vuelo con id " + id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(path = "addService/{idPaquete}/{idServicio}")
+    public ResponseEntity<ApiResponse<VueloDTO>> addService(@PathVariable("idPaquete") Long idPaquete,
+                                                            @PathVariable("idServicio") Long idServicio){
+        VueloDTO servicio = this.productoServicioService.addServicioAdicional(idPaquete, idServicio);
+        ApiResponse<VueloDTO> response = new ApiResponse<>(servicio, "Se agrega el servicio con exito al vuelo");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(path = "removeService/{idPaquete}/{idServicio}")
+    public ResponseEntity<ApiResponse<VueloDTO>> removeService(@PathVariable("idPaquete") Long idPaquete,
+                                                               @PathVariable("idServicio") Long idServicio){
+        VueloDTO servicio = this.productoServicioService.removeServicioAdicional(idPaquete, idServicio);
+        ApiResponse<VueloDTO> response = new ApiResponse<>(servicio, "Se elimina el servicio con exito del vuelo");
         return ResponseEntity.ok(response);
     }
 }

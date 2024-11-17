@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"serviciosAdicionales"})
 @Table(name = "paquete_turistico")
 public class PaqueteTuristicoModel {
 

@@ -12,6 +12,12 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    public ApiResponse(T data, String message) {
+        this.respuestaExitosa = true;
+        this.mensaje = message;
+        this.data = data;
+    }
+
     public ApiResponse() {
         this.respuestaExitosa = true;
     }

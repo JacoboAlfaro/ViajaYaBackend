@@ -4,6 +4,7 @@ import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
+import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ public class PaqueteTuristicoController {
 
     @Autowired
     private IPaqueteTuristicoService paqueteTuristicoService;
+    @Autowired
+    private IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaquetesTuristicos(){
@@ -53,6 +56,22 @@ public class PaqueteTuristicoController {
         @SuppressWarnings("unused")
         boolean respuesta = this.paqueteTuristicoService.deletePaquete(id);
         ApiResponse<String> response = new ApiResponse<>("Se borró el paquete con id " + id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(path = "addService/{idPaquete}/{idServicio}")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> addService(@PathVariable("idPaquete") Long idPaquete,
+                                                                               @PathVariable("idServicio") Long idServicio){
+        PaqueteTuristicoResponseDTO servicio = this.productoServicioService.addServicioAdicional(idPaquete, idServicio);
+        ApiResponse<PaqueteTuristicoResponseDTO> response = new ApiResponse<>(servicio, "Se agrega el servicio con exito al paquete turistico");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(path = "removeService/{idPaquete}/{idServicio}")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> removeService(@PathVariable("idPaquete") Long idPaquete,
+                                                                                  @PathVariable("idServicio") Long idServicio){
+        PaqueteTuristicoResponseDTO servicio = this.productoServicioService.removeServicioAdicional(idPaquete, idServicio);
+        ApiResponse<PaqueteTuristicoResponseDTO> response = new ApiResponse<>(servicio, "Se elimina el servicio con exito del paquete turistico");
         return ResponseEntity.ok(response);
     }
 }
