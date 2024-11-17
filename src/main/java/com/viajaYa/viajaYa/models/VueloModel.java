@@ -29,6 +29,10 @@ public class VueloModel {
     @JsonBackReference
     private List<PaqueteTuristicoModel> paquetesTuristicos;
 
+    @JsonBackReference
+    @ManyToMany(mappedBy = "vuelos")
+    private List<ReservaModel> reservas;
+
     public Long getId() {
         return id;
     }
@@ -100,5 +104,13 @@ public class VueloModel {
     }
     public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
         this.paquetesTuristicos = paquetesTuristicos;
+    }
+
+    public List<ReservaModel> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<ReservaModel> reservas) {
+        this.reservas = reservas;
     }
 }

@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,5 +66,14 @@ public class VueloService implements IVueloService {
         }
         vueloRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<VueloModel> getVueloById(List<Long> id) {
+        List<VueloModel> vuelos = vueloRepository.findByIdIn(id);
+        if(vuelos.isEmpty()){
+            throw new BusinessException("Vuelo no encontrado con id " + id);
+        }
+        return vuelos;
     }
 }

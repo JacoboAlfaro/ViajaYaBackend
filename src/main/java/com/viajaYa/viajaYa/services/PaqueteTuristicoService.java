@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -84,5 +85,15 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService {
         }
         paqueteTuristicoRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<PaqueteTuristicoModel> getPaqueteById(List<Long> id) {
+        List<PaqueteTuristicoModel> paquetes = paqueteTuristicoRepository.findByIdIn(id);
+
+        if (paquetes.isEmpty()){
+            throw new BusinessException("Paquete no encontrado con id " + id);
+        }
+        return paquetes;
     }
 }

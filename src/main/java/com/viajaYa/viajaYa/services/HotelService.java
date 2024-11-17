@@ -1,38 +1,50 @@
 package com.viajaYa.viajaYa.services;
 
 import com.viajaYa.viajaYa.models.HotelModel;
+import com.viajaYa.viajaYa.models.dtos.HotelDTO;
 import com.viajaYa.viajaYa.repositories.IHotelRepository;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
+import com.viajaYa.viajaYa.services.mappers.IMapper;
+import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HotelService implements IHotelService {
 
     @Autowired
-    IHotelRepository hotelRepositorio;
+    IHotelRepository hotelRepository;
+    @Autowired
+    IMapper<HotelDTO, HotelModel> mapper;
+
 
     @Override
     public ArrayList<HotelModel> getHotel(){
-        return (ArrayList<HotelModel>) hotelRepositorio.findAll();
+        return (ArrayList<HotelModel>) hotelRepository.findAll();
     }
 
     @Override
-    public HotelModel saveHotel(HotelModel hotel){
-        return hotelRepositorio.save(hotel);
+    public HotelModel saveHotel(HotelDTO dto){
+        HotelModel hotel = mapper.toEntity(dto);
+        return hotelRepository.save(hotel);
     }
 
     @Override
     public Optional<HotelModel> getHotelId(Long id){
-        return hotelRepositorio.findById(id);
+        Optional<HotelModel> hotel = hotelRepository.findById(id);
+        if (hotel.isEmpty()){
+            throw new BusinessException("Hotel con id " + id + " no encontrado");
+        }
+        return hotel;
     }
 
     @Override
     public HotelModel updateHotelId(HotelModel request, Long id){
-        HotelModel hotel = hotelRepositorio.findById(id).get();
+        HotelModel hotel = hotelRepository.findById(id).get();
 
         hotel.setNombreHotel(request.getNombreHotel());
         hotel.setCiudad(request.getCiudad());
@@ -42,18 +54,30 @@ public class HotelService implements IHotelService {
         hotel.setTipoHabitacion(request.getTipoHabitacion());
         hotel.setPrecioNoche(request.getPrecioNoche());
 
-        hotelRepositorio.save(hotel);
+        hotelRepository.save(hotel);
 
         return hotel;
     }
 
     @Override
     public Boolean deleteHotelId(Long id){
-        try{
-            hotelRepositorio.deleteById(id);
-            return true;
-        } catch (Exception e){
-            return false;
+        Optional<HotelModel> hotel = hotelRepository.findById(id);
+        if(hotel.isEmpty()){
+            throw new BusinessException("Hotel con id " + id + " no encontrado");
         }
+        hotelRepository.deleteById(id);
+        return true;
     }
+
+    @Override
+    public List<HotelModel> getHotelById(List<Long> id) {
+        List<HotelModel> hoteles = hotelRepository.findByIdIn(id);
+
+        if (hoteles.isEmpty()){
+            throw new BusinessException("Hotel no encontrado con id " + id);
+        }
+        return hoteles;
+    }
+
+
 }

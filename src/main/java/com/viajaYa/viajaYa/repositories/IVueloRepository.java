@@ -4,8 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.viajaYa.viajaYa.models.VueloModel;
 
+import java.util.List;
+
 @Repository
 public interface IVueloRepository extends JpaRepository<VueloModel, Long> {
+    List<VueloModel> findByIdIn(List<Long> id);
     // @Query("SELECT v FROM VueloModel v WHERE v.precio = ?1")
     // VueloModel findVueloByPrecio(double precio);
 
