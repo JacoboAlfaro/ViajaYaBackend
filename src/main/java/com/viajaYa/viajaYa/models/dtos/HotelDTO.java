@@ -1,19 +1,6 @@
-package com.viajaYa.viajaYa.models;
+package com.viajaYa.viajaYa.models.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-
-import java.util.List;
-
-@Entity
-@Table(name = "hotel")
-public class HotelModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class HotelDTO {
     private String nombreHotel;
     private String ciudad;
     private String pais;
@@ -21,18 +8,6 @@ public class HotelModel {
     private int numEstrellas;
     private String tipoHabitacion;
     private float precioNoche;
-
-    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<PaqueteTuristicoModel> paquetesTuristicos;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getNombreHotel() {
         return nombreHotel;
@@ -88,13 +63,5 @@ public class HotelModel {
 
     public void setPrecioNoche(float precioNoche) {
         this.precioNoche = precioNoche;
-    }
-
-    public List<PaqueteTuristicoModel> getPaquetesTuristicos() {
-        return paquetesTuristicos;
-    }
-
-    public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
-        this.paquetesTuristicos = paquetesTuristicos;
     }
 }

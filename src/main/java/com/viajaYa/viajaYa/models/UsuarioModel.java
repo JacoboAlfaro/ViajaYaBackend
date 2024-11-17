@@ -1,10 +1,10 @@
 package com.viajaYa.viajaYa.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -19,6 +19,9 @@ public class UsuarioModel {
     private String direccion;
     private String correoElectronico;
     private int rol;
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<ReservaModel> reservas;
 
 
     public Long getId() {
@@ -62,5 +65,11 @@ public class UsuarioModel {
     }
     public void setRol(int rol) {
         this.rol = rol;
+    }
+    public List<ReservaModel> getReservas() {
+        return reservas;
+    }
+    public void setReservas(List<ReservaModel> reservas) {
+        this.reservas = reservas;
     }
 }

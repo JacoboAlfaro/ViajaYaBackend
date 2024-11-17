@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.controllers;
 
 import com.viajaYa.viajaYa.models.HotelModel;
+import com.viajaYa.viajaYa.models.dtos.HotelDTO;
 import com.viajaYa.viajaYa.services.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,28 +16,28 @@ public class HotelController {
     @Autowired
     private HotelService hotelServicio;
 
-    @GetMapping("/getHoteles")
+    @GetMapping
     public ArrayList<HotelModel> getHoteles(){
         return this.hotelServicio.getHotel();
     }
 
-    @PostMapping("/saveHotel")
-    public HotelModel saveHotel(@RequestBody HotelModel hotel){
-        return this.hotelServicio.saveHotel(hotel);
+    @PostMapping
+    public HotelModel saveHotel(@RequestBody HotelDTO dto){
+        return this.hotelServicio.saveHotel(dto);
     }
 
 
-    @GetMapping("/getHotel/{id}")
+    @GetMapping(path = "{id}")
     public Optional<HotelModel> getHotelId(@PathVariable("id") Long id){
         return this.hotelServicio.getHotelId(id);
     }
 
-    @PutMapping("/updateHotel/{id}")
+    @PutMapping(path = "{id}")
     public HotelModel updateHotelId(@RequestBody HotelModel request, @PathVariable("id") Long id){
         return this.hotelServicio.updateHotelId(request, id);
     }
 
-    @DeleteMapping("/deleteHotel/{id}")
+    @DeleteMapping(path = "{id}")
     public String deleteHotelId(@PathVariable("id") Long id){
         boolean ok = this.hotelServicio.deleteHotelId(id);
 

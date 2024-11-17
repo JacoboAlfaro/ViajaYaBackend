@@ -38,6 +38,9 @@ public class VueloModel {
             inverseJoinColumns = @JoinColumn(name = "id_servicio")
     )
     private List<ServicioAdicionalModel> serviciosAdicionales;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "vuelos")
+    private List<ReservaModel> reservas;
 
     public Long getId() {
         return id;
@@ -118,5 +121,11 @@ public class VueloModel {
 
     public void setServiciosAdicionales(List<ServicioAdicionalModel> serviciosAdicionales) {
         this.serviciosAdicionales = serviciosAdicionales;
+    public List<ReservaModel> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<ReservaModel> reservas) {
+        this.reservas = reservas;
     }
 }

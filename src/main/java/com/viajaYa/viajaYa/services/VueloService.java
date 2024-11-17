@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
@@ -114,5 +115,11 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
             throw new BusinessException("Servicio adicional con id " + idServicio + " no encontrado");
         }
         return vuelo;
+    public List<VueloModel> getVueloById(List<Long> id) {
+        List<VueloModel> vuelos = vueloRepository.findByIdIn(id);
+        if(vuelos.isEmpty()){
+            throw new BusinessException("Vuelo no encontrado con id " + id);
+        }
+        return vuelos;
     }
 }

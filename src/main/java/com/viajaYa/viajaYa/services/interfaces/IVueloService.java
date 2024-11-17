@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.services.interfaces;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.viajaYa.viajaYa.models.VueloModel;
@@ -11,5 +12,6 @@ public interface IVueloService {
     public Optional<VueloModel> getVueloById(Long id);
     public VueloModel updateVueloById(VueloDTO vuelo, Long id);
     public boolean deleteVueloById(Long id);
+    public List<VueloModel> getVueloById(List<Long> id);
 
 }
