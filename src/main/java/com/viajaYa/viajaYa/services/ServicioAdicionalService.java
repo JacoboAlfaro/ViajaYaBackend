@@ -2,6 +2,7 @@ package com.viajaYa.viajaYa.services;
 
 import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
 import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalDTO;
+import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalRequestDTO;
 import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
 import com.viajaYa.viajaYa.services.interfaces.IServicioAdicionalService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
@@ -22,6 +23,8 @@ public class ServicioAdicionalService implements IServicioAdicionalService {
 
     @Autowired
     private IMapper<ServicioAdicionalDTO, ServicioAdicionalModel> mapper;
+    @Autowired
+    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalModel> mapperDto;
 
     @Override
     public ArrayList<ServicioAdicionalDTO> getServicios() {
@@ -75,7 +78,7 @@ public class ServicioAdicionalService implements IServicioAdicionalService {
 
     // DRY [Implementación de principio dry en el siguiente metodo]
     @Override
-    public ArrayList<ServicioAdicionalDTO> getServiciosByRelacionId(String tipoProducto, Long relacionId) {
+    public ArrayList<ServicioAdicionalRequestDTO> getServiciosByRelacionId(String tipoProducto, Long relacionId) {
         ArrayList<ServicioAdicionalModel> servicios = switch (tipoProducto) {
             case "vuelos" -> servicioAdicionalRepository.findServiciosByVueloId(relacionId);
             case "hoteles" -> servicioAdicionalRepository.findServiciosByHotelId(relacionId);
@@ -84,16 +87,7 @@ public class ServicioAdicionalService implements IServicioAdicionalService {
         };
 
         return servicios.stream()
-                .map(mapper::toDto)
+                .map(mapperDto::toDto)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
-
-    /*@Override
-    public ArrayList<ServicioAdicionalDTO> getServiciosByRelacionId(String tipoProducto, Long relacionId) {
-        ArrayList<ServicioAdicionalModel> servicios = servicioAdicionalRepository.findServiciosByRelacion(tipoProducto, relacionId);
-
-        return servicios.stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toCollection(ArrayList::new));
-    }*/
 }

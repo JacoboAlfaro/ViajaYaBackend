@@ -7,6 +7,7 @@ import com.viajaYa.viajaYa.services.interfaces.IReservaService;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ReservaController {
     private IReservaService reservaService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<ReservaModel>>> getReservas(){
         List<ReservaModel> reservas = this.reservaService.getReservas();
         ApiResponse<List<ReservaModel>> response = new ApiResponse<>(reservas);
@@ -26,6 +28,7 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<ReservaModel>> getReserva(@PathVariable("id") Long id){
         ReservaModel reserva = this.reservaService.getReservaById(id).get();
         ApiResponse<ReservaModel> response = new ApiResponse<>(reserva);
@@ -33,12 +36,14 @@ public class ReservaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<ReservaModel>> saveReserva(@RequestBody ReservaDTO dto){
         ReservaModel reserva = this.reservaService.saveReserva(dto);
         ApiResponse<ReservaModel> response =  new ApiResponse<>(reserva);
         return ResponseEntity.ok(response);
     }
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<ReservaModel>> updateReserva(@RequestBody ReservaDTO request,
                                                                    @PathVariable("id") Long id){
         ReservaModel reserva = this.reservaService.updateReservaById(request, id);
@@ -46,6 +51,7 @@ public class ReservaController {
         return ResponseEntity.ok(response);
     }
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<String>> deleteReserva(@PathVariable("id") Long id){
         @SuppressWarnings("unused")
         boolean respuesta = this.reservaService.deleteReservaById(id);
@@ -53,6 +59,7 @@ public class ReservaController {
         return ResponseEntity.ok(response);
     }
     @GetMapping(path = "/usuario/{idUsuario}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<List<ReservaModel>>> getReservasByUsuario(@PathVariable("idUsuario") Long idUsuario){
         List<ReservaModel> reservas = this.reservaService.getReservasByUsuario(idUsuario);
         ApiResponse<List<ReservaModel>> response = new ApiResponse<>(reservas);
@@ -60,6 +67,7 @@ public class ReservaController {
     }
 
     @PutMapping(path = "/{id}/confirmar")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<String>> confirmarReserva(@PathVariable("id") Long id) {
         boolean confirmada = this.reservaService.confirmarReserva(id);
         ApiResponse<String> response = new ApiResponse<>("Reserva con id " + id + " confirmada correctamente.");
@@ -67,6 +75,7 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/usuario/{idUsuario}/historial")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<ReservaModel>>> getHistorialReservas(@PathVariable("idUsuario") Long idUsuario) {
         List<ReservaModel> reservas = reservaService.getHistorialReservasByUsuario(idUsuario);
         ApiResponse<List<ReservaModel>> response = new ApiResponse<>(reservas);

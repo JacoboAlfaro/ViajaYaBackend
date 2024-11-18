@@ -20,6 +20,7 @@ public class VueloDTOMapper implements IMapper<VueloDTO, VueloModel> {
     @Override
     public VueloModel toEntity(VueloDTO dto) {
         VueloModel vuelo = new VueloModel();
+        vuelo.setId(dto.getId());
         vuelo.setNumVuelo(dto.getNumVuelo());
         vuelo.setAerolinea(dto.getAerolinea());
         vuelo.setOrigen(dto.getOrigen());
@@ -36,6 +37,7 @@ public class VueloDTOMapper implements IMapper<VueloDTO, VueloModel> {
     @Override
     public VueloDTO toDto(VueloModel model) {
         VueloDTO dto = new VueloDTO();
+        dto.setId(model.getId());
         dto.setNumVuelo(model.getNumVuelo());
         dto.setAerolinea(model.getAerolinea());
         dto.setOrigen(model.getOrigen());

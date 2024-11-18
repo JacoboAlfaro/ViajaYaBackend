@@ -49,7 +49,7 @@ public class UsuarioService implements IUsuarioService {
 
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setIdentificacion(usuario.getIdentificacion());
-        usuarioExistente.setContraseña(usuario.getContraseña());
+        usuarioExistente.setContrasena(usuario.getContrasena());
         usuarioExistente.setDireccion(usuario.getDireccion());
         usuarioExistente.setCorreoElectronico(usuario.getCorreoElectronico());
         usuarioExistente.setRol(usuario.getRol());

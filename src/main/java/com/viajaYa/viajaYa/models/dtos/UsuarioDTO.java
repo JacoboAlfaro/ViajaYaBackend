@@ -24,11 +24,11 @@ public class UsuarioDTO {
         this.identificacion = identificacion;
     }
 
-    public String getContraseña() {
+    public String getContrasena() {
         return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
+    public void setContrasena(String contraseña) {
         this.contrasena = contraseña;
     }
 

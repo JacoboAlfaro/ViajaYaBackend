@@ -1,11 +1,16 @@
 package com.viajaYa.viajaYa.services;
 
 import com.viajaYa.viajaYa.models.HotelModel;
+import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.dtos.HotelDTO;
+import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.repositories.IHotelRepository;
+import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
+import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +19,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class HotelService implements IHotelService {
+public class HotelService implements IHotelService, IProductoServicioService<HotelDTO> {
 
     @Autowired
     IHotelRepository hotelRepository;
     @Autowired
     IMapper<HotelDTO, HotelModel> mapper;
-
+    @Autowired
+    IServicioAdicionalRepository servicioAdicionalRepository;
 
     @Override
     public ArrayList<HotelModel> getHotel(){
@@ -43,8 +49,9 @@ public class HotelService implements IHotelService {
     }
 
     @Override
-    public HotelModel updateHotelId(HotelModel request, Long id){
-        HotelModel hotel = hotelRepository.findById(id).get();
+    public HotelModel updateHotelId(HotelDTO request, Long id){
+        HotelModel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Hotel con id " + id + " no encontrado"));
 
         hotel.setNombreHotel(request.getNombreHotel());
         hotel.setCiudad(request.getCiudad());
@@ -79,5 +86,44 @@ public class HotelService implements IHotelService {
         return hoteles;
     }
 
+    @Override
+    @Transactional
+    public HotelDTO addServicioAdicional(Long idHotel, Long idServicio){
+        HotelModel hotel = obtenerProdcutoConServicio(idHotel, idServicio);
+
+        if (hotel.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
+            throw new BusinessException("El servicio adicional con id " + idServicio + " ya se encuentra en el hotel");
+        }
+        hotel.getServiciosAdicionales().add(servicioAdicionalRepository.getReferenceById(idServicio));
+
+        HotelModel hotelNuevo = hotelRepository.save(hotel);
+        return mapper.toDto(hotelNuevo);
+    }
+
+    @Override
+    @Transactional
+    public HotelDTO removeServicioAdicional(Long idHotel, Long idServicio) {
+        HotelModel paquete = obtenerProdcutoConServicio(idHotel, idServicio);
+
+        if (!paquete.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
+            throw new BusinessException("El servicio adicional con id " + idServicio + " no está asociado al hotel");
+        }
+        paquete.getServiciosAdicionales().remove(servicioAdicionalRepository.getReferenceById(idServicio));
+
+        HotelModel hotelNuevo = hotelRepository.save(paquete);
+        return mapper.toDto(hotelNuevo);
+    }
+
+    /*Metodo privado para obtener un paquete turistico con un servicio adicional
+    [Aplicacion de los principio DRY Y KISS] */
+    private HotelModel obtenerProdcutoConServicio(Long idHotel, Long idServicio) {
+        HotelModel paquete = hotelRepository.findById(idHotel)
+                .orElseThrow(() -> new BusinessException("Hotel con id " + idHotel + " no encontrado"));
+
+        if (!servicioAdicionalRepository.existsById(idServicio)) {
+            throw new BusinessException("Servicio adicional con id " + idServicio + " no encontrado");
+        }
+        return paquete;
+    }
 
 }

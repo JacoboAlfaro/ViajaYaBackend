@@ -6,6 +6,7 @@ import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -20,6 +21,7 @@ public class InformeController {
     IInformeService informeService;
 
     @GetMapping("/{mes}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> obtenerInforme(@PathVariable int mes) {
         Map<String, Object> informe = informeService.obtenerInformeMasVendidos(mes);
         return ResponseEntity.ok(informe);

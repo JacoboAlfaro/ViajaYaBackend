@@ -1,9 +1,13 @@
 package com.viajaYa.viajaYa.services.mappers;
 
+import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
+import com.viajaYa.viajaYa.models.VueloModel;
+import com.viajaYa.viajaYa.models.dtos.HotelDTO;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalDTO;
+import com.viajaYa.viajaYa.models.dtos.VueloDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +19,11 @@ public class ServicioAdicionalDTOMapper implements IMapper<ServicioAdicionalDTO,
 
     @Autowired
     IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> paqueteTuristicoMapper;
+    @Autowired
+    IMapper<HotelDTO, HotelModel> hotelMapper;
+    @Autowired
+    IMapper<VueloDTO, VueloModel> vueloMapper;
+
     @Override
     public ServicioAdicionalModel toEntity(ServicioAdicionalDTO dto) {
         ServicioAdicionalModel entity = new ServicioAdicionalModel();
@@ -27,11 +36,18 @@ public class ServicioAdicionalDTOMapper implements IMapper<ServicioAdicionalDTO,
 
         List<PaqueteTuristicoModel> paquetes = dto.getPaqueteTuristicos().stream()
                 .map(paqueteTuristicoMapper::toEntity)
-                .collect(Collectors.toList());
+                .toList();
         entity.setPaqueteTuristicos(paquetes);
 
-        entity.setHoteles(dto.getHoteles());
-        entity.setVuelos(dto.getVuelos());
+        List<HotelModel> hoteles =dto.getHoteles().stream()
+                .map(hotelMapper::toEntity)
+                .toList();
+        entity.setHoteles(hoteles);
+
+        List<VueloModel> vuelos = dto.getVuelos().stream()
+                .map(vueloMapper::toEntity)
+                .toList();
+        entity.setVuelos(vuelos);
 
         return entity;
     }
@@ -49,13 +65,23 @@ public class ServicioAdicionalDTOMapper implements IMapper<ServicioAdicionalDTO,
         dto.setTerminosCondiciones(entity.getTerminosCondiciones());
         dto.setPrecio(entity.getPrecio());
         dto.setCategoriaServicio(entity.getCategoriaServicio());
-        dto.setHoteles(entity.getHoteles());
-        dto.setVuelos(entity.getVuelos());
+
 
         List<PaqueteTuristicoDTO> paquetes = entity.getPaqueteTuristicos().stream()
                 .map(paqueteTuristicoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
         dto.setPaqueteTuristicos(paquetes);
+
+        List<HotelDTO> hoteles = entity.getHoteles().stream()
+                .map(hotelMapper::toDto)
+                .toList();
+
+        dto.setHoteles(hoteles);
+
+        List<VueloDTO> vuelos = entity.getVuelos().stream()
+                .map(vueloMapper::toDto)
+                .toList();
+        dto.setVuelos(vuelos);
 
         return dto;
     }

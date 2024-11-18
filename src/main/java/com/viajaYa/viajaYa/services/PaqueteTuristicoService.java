@@ -137,6 +137,8 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
             throw new BusinessException("Servicio adicional con id " + idServicio + " no encontrado");
         }
         return paquete;
+    }
+
     public List<PaqueteTuristicoModel> getPaqueteById(List<Long> id) {
         List<PaqueteTuristicoModel> paquetes = paqueteTuristicoRepository.findByIdIn(id);
 

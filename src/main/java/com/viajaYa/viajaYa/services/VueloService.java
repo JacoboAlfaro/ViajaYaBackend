@@ -35,6 +35,7 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
     public ArrayList<VueloModel> getVuelos(){
         return (ArrayList<VueloModel>) vueloRepository.findAll();
     }
+
     @Override
     public Optional<VueloModel> getVueloById(Long id){
         Optional<VueloModel> vuelo = vueloRepository.findById(id);
@@ -115,6 +116,8 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
             throw new BusinessException("Servicio adicional con id " + idServicio + " no encontrado");
         }
         return vuelo;
+    }
+
     public List<VueloModel> getVueloById(List<Long> id) {
         List<VueloModel> vuelos = vueloRepository.findByIdIn(id);
         if(vuelos.isEmpty()){

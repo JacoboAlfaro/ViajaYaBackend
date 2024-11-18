@@ -12,6 +12,7 @@ import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,10 +61,15 @@ public class PaqueteTuristicoResponseDTOMapper implements IMapper<PaqueteTuristi
             dto.setIdHotel(model.getHotel().getId());
         }
 
-        List<ServicioAdicionalRequestDTO> servicios = model.getServiciosAdicionales().stream()
-                .map(servicioAdicionalDTOMapper::toDto)
-                .collect(Collectors.toList());
-        dto.setServiciosAdicionales(servicios);
+
+        if(model.getServiciosAdicionales() != null){
+            List<ServicioAdicionalRequestDTO> servicios = model.getServiciosAdicionales().stream()
+                    .map(servicioAdicionalDTOMapper::toDto)
+                    .collect(Collectors.toList());
+            dto.setServiciosAdicionales(servicios);
+        }else{
+            dto.setServiciosAdicionales(new ArrayList<>());
+        }
         return dto;
     }
 

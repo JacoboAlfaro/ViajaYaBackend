@@ -1,6 +1,9 @@
 package com.viajaYa.viajaYa.models.dtos;
 
+import java.util.List;
+
 public class HotelDTO {
+    private Long id;
     private String nombreHotel;
     private String ciudad;
     private String pais;
@@ -8,6 +11,15 @@ public class HotelDTO {
     private int numEstrellas;
     private String tipoHabitacion;
     private float precioNoche;
+    private List<ServicioAdicionalRequestDTO> serviciosAdicionales;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNombreHotel() {
         return nombreHotel;
@@ -63,5 +75,13 @@ public class HotelDTO {
 
     public void setPrecioNoche(float precioNoche) {
         this.precioNoche = precioNoche;
+    }
+
+    public List<ServicioAdicionalRequestDTO> getServiciosAdicionales() {
+        return serviciosAdicionales;
+    }
+
+    public void setServiciosAdicionales(List<ServicioAdicionalRequestDTO> serviciosAdicionales) {
+        this.serviciosAdicionales = serviciosAdicionales;
     }
 }

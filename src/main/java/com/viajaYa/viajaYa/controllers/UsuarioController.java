@@ -4,6 +4,7 @@ package com.viajaYa.viajaYa.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -19,6 +20,7 @@ public class UsuarioController {
     private IUsuarioService usuarioService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<UsuarioModel>>> getUsuarios(){
         List<UsuarioModel> usuarios = this.usuarioService.getUsuarios();
         ApiResponse<List<UsuarioModel>> response = new ApiResponse<>(usuarios);
@@ -26,6 +28,7 @@ public class UsuarioController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<UsuarioModel>> getUsuario(@PathVariable("id") Long id){
         UsuarioModel usuario = this.usuarioService.getUsuarioById(id).get();
         ApiResponse<UsuarioModel> response = new ApiResponse<>(usuario);
@@ -33,6 +36,7 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<UsuarioModel>> saveUsuario(@RequestBody UsuarioDTO usuario){
         UsuarioModel usuarioGuardado = this.usuarioService.saveUsuario(usuario);
         ApiResponse<UsuarioModel> response =  new ApiResponse<>(usuarioGuardado);
@@ -41,6 +45,7 @@ public class UsuarioController {
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<UsuarioModel>> updateUsuario(@RequestBody UsuarioDTO usuario,
                                                                                      @PathVariable("id") Long id){
         UsuarioModel usuarioActualizado = this.usuarioService.updateUsuarioById(usuario, id);
@@ -49,6 +54,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<String>> deleteUsuario(@PathVariable("id") Long id){
         @SuppressWarnings("unused")
         boolean respuesta = this.usuarioService.deleteUsuarioById(id);

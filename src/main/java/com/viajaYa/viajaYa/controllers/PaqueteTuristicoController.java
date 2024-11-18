@@ -5,9 +5,11 @@ import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
+import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,11 @@ public class PaqueteTuristicoController {
     private IPaqueteTuristicoService paqueteTuristicoService;
     @Autowired
     private IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService;
+    @Autowired
+    private IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> mapper;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaquetesTuristicos(){
         List<PaqueteTuristicoResponseDTO> paquetes = this.paqueteTuristicoService.getPaquetes();
         ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(paquetes);
@@ -29,6 +34,7 @@ public class PaqueteTuristicoController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> getPaqueteTuristico(@PathVariable("id") Long id){
         PaqueteTuristicoResponseDTO paquete = this.paqueteTuristicoService.getByid(id).get();
         ApiResponse<PaqueteTuristicoResponseDTO> response = new ApiResponse<>(paquete);
@@ -36,22 +42,25 @@ public class PaqueteTuristicoController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PaqueteTuristicoModel>> savePaqueteTuristico(@RequestBody PaqueteTuristicoDTO dto){
+    @PreAuthorize("hasRole(Role.ADMIN)")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> savePaqueteTuristico(@RequestBody PaqueteTuristicoDTO dto){
         PaqueteTuristicoModel paquete = this.paqueteTuristicoService.savePaqueteTuristico(dto);
-        ApiResponse<PaqueteTuristicoModel> response =  new ApiResponse<>(paquete);
+        ApiResponse<PaqueteTuristicoResponseDTO> response =  new ApiResponse<>(mapper.toDto(paquete));
         return ResponseEntity.ok(response);
 
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<ApiResponse<PaqueteTuristicoModel>> updatePaqueteTuristico(@RequestBody PaqueteTuristicoDTO request,
+    @PreAuthorize("hasRole(Role.ADMIN)")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> updatePaqueteTuristico(@RequestBody PaqueteTuristicoDTO request,
                                                                                      @PathVariable("id") Long id){
         PaqueteTuristicoModel paquete = this.paqueteTuristicoService.updateById(request, id);
-        ApiResponse<PaqueteTuristicoModel> response = new ApiResponse<>(paquete);
+        ApiResponse<PaqueteTuristicoResponseDTO> response = new ApiResponse<>(mapper.toDto(paquete));
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<String>> deletePaqueteTuristico(@PathVariable("id") Long id){
         @SuppressWarnings("unused")
         boolean respuesta = this.paqueteTuristicoService.deletePaquete(id);
@@ -60,6 +69,7 @@ public class PaqueteTuristicoController {
     }
 
     @PutMapping(path = "addService/{idPaquete}/{idServicio}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> addService(@PathVariable("idPaquete") Long idPaquete,
                                                                                @PathVariable("idServicio") Long idServicio){
         PaqueteTuristicoResponseDTO servicio = this.productoServicioService.addServicioAdicional(idPaquete, idServicio);
@@ -68,6 +78,7 @@ public class PaqueteTuristicoController {
     }
 
     @PutMapping(path = "removeService/{idPaquete}/{idServicio}")
+    @PreAuthorize("hasRole(Role.ADMIN)")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> removeService(@PathVariable("idPaquete") Long idPaquete,
                                                                                   @PathVariable("idServicio") Long idServicio){
         PaqueteTuristicoResponseDTO servicio = this.productoServicioService.removeServicioAdicional(idPaquete, idServicio);

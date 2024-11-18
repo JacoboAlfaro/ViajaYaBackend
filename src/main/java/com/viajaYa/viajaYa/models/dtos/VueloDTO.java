@@ -6,6 +6,7 @@ import java.util.List;
 import com.viajaYa.viajaYa.models.enums.ClaseServicio;
 
 public class VueloDTO {
+    private Long id;
     private String numVuelo;
     private String aerolinea;
     private String origen;
@@ -18,7 +19,12 @@ public class VueloDTO {
     private boolean equipaje;
     private List<ServicioAdicionalRequestDTO> serviciosAdicionales;
 
-    
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getNumVuelo() {
         return numVuelo;
     }
