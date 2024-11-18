@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,22 @@ public class VueloService implements IVueloService {
 
     @Autowired
     IMapper<VueloDTO, VueloModel> mapper;
+
+
+    
+    public VueloModel findVueloByPrecio(double precio){
+        return vueloRepository.findVueloByPrecio(precio);
+    }
+
+    
+    public VueloModel findVueloByFechaHoraSalida(LocalDateTime fechaHoraSalida){
+        return vueloRepository.findVueloByFechaHoraSalida(fechaHoraSalida);
+    }
+
+    
+    public VueloModel findVueloByPrecioAndFechaHoraSalida(double precio, LocalDateTime fechaHoraSalida){
+        return vueloRepository.findVueloByPrecioAndFechaHoraSalida(precio, fechaHoraSalida);
+    }
 
     @Override
     public ArrayList<VueloModel> getVuelos(){

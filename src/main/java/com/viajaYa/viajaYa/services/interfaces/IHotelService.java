@@ -13,4 +13,7 @@ public interface IHotelService {
     public Optional<HotelModel> getHotelId(Long id);
     public HotelModel updateHotelId(HotelModel request, Long id);
     public Boolean deleteHotelId(Long id);
+    public HotelModel findHotelByCiudad(String ciudad);
+    public HotelModel findHotelByPrecioNoche(float precioNoche);
+    public HotelModel findHotelByCiudadAndPrecioNoche(String ciudad, float precioNoche);
 }

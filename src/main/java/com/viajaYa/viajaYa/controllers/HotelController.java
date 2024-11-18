@@ -15,6 +15,23 @@ public class HotelController {
     @Autowired
     private HotelService hotelServicio;
 
+
+    @GetMapping("/porciudad/{ciudad}")
+    public HotelModel getHotelByCiudad(@PathVariable("ciudad") String ciudad){
+        return this.hotelServicio.findHotelByCiudad(ciudad);
+    }   
+
+    @GetMapping("/porprecio/{precioNoche}")
+    public HotelModel getHotelByPrecioNoche(@PathVariable("precioNoche") float precioNoche){
+        return this.hotelServicio.findHotelByPrecioNoche(precioNoche);
+    }
+
+    @GetMapping("/porciudadyprecio/{ciudad}/{precioNoche}")
+    public HotelModel getHotelByCiudadAndPrecioNoche(@PathVariable("ciudad") String ciudad, @PathVariable("precioNoche") float precioNoche){
+        return this.hotelServicio.findHotelByCiudadAndPrecioNoche(ciudad, precioNoche);
+    }
+    
+
     @GetMapping("/getHoteles")
     public ArrayList<HotelModel> getHoteles(){
         return this.hotelServicio.getHotel();
