@@ -1,4 +1,5 @@
 package com.viajaYa.viajaYa.services.interfaces;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,12 @@ public interface IVueloService {
     public Optional<VueloModel> getVueloById(Long id);
     public VueloModel updateVueloById(VueloDTO vuelo, Long id);
     public boolean deleteVueloById(Long id);
+<<<<<<< HEAD
     public List<VueloModel> getVueloById(List<Long> id);
 
+=======
+    public VueloModel findVueloByPrecio(double precio);
+    public VueloModel findVueloByFechaHoraSalida(LocalDateTime fechaHoraSalida);
+    public VueloModel findVueloByPrecioAndFechaHoraSalida(double precio, LocalDateTime fechaHoraSalida);
+>>>>>>> smuel
 }

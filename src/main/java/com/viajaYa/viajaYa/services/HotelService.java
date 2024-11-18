@@ -22,6 +22,19 @@ public class HotelService implements IHotelService {
     IMapper<HotelDTO, HotelModel> mapper;
 
 
+
+    public HotelModel findHotelByCiudad(String ciudad){
+        return hotelRepositorio.findHotelByCiudad(ciudad);
+    }
+
+    public HotelModel findHotelByPrecioNoche(float precioNoche){
+        return hotelRepositorio.findHotelByPrecioNoche(precioNoche);
+    }
+
+    public HotelModel findHotelByCiudadAndPrecioNoche(String ciudad, float precioNoche){
+        return hotelRepositorio.findHotelByCiudadAndPrecioNoche(ciudad, precioNoche);
+    }
+
     @Override
     public ArrayList<HotelModel> getHotel(){
         return (ArrayList<HotelModel>) hotelRepository.findAll();

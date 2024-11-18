@@ -13,6 +13,8 @@ import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +30,19 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService {
     IVueloService vueloService;
     @Autowired
     IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> mapper;
+
+
+    public PaqueteTuristicoModel findPaqueteTuristicoByPrecio(float precio){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecio(precio);
+    }
+
+    public PaqueteTuristicoModel findPaqueteTuristicoByFecha(Date fechaSalida){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByFecha(fechaSalida);
+    }
+
+    public PaqueteTuristicoModel findPaqueteTuristicoByPrecioAndFechaSalida(float precio, Date fechaSalida){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecioAndFechaSalida(precio, fechaSalida);
+    }
 
     @Override
     public ArrayList<PaqueteTuristicoModel> getPaquetes(){
@@ -45,7 +60,6 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService {
 
     @Override
     public PaqueteTuristicoModel savePaqueteTuristico(PaqueteTuristicoDTO dto){
-
         PaqueteTuristicoModel paquete = mapper.toEntity(dto);
         return paqueteTuristicoRepository.save(paquete);
     }

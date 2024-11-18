@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.controllers;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,29 @@ public class VueloController {
 
     @Autowired
     private IVueloService vueloService;
+
+
+    @GetMapping(path = "/porprecio/{precio}")
+    public ResponseEntity<ApiResponse<VueloModel>> getVueloByPrecio(@PathVariable("precio") double precio){
+        VueloModel vuelo = this.vueloService.findVueloByPrecio(precio);
+        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porfechahorasalida/{fechaHoraSalida}")
+    public ResponseEntity<ApiResponse<VueloModel>> getVueloByFechaHoraSalida(@PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
+        VueloModel vuelo = this.vueloService.findVueloByFechaHoraSalida(fechaHoraSalida);
+        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porprecioyfechahorasalida/{precio}/{fechaHoraSalida}")
+    public ResponseEntity<ApiResponse<VueloModel>> getVueloByPrecioAndFechaHoraSalida(@PathVariable("precio") double precio, @PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
+        VueloModel vuelo = this.vueloService.findVueloByPrecioAndFechaHoraSalida(precio, fechaHoraSalida);
+        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+        return ResponseEntity.ok(response);
+    }
+
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<VueloModel>>> getVuelos(){

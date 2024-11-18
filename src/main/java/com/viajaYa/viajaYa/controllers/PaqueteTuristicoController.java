@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -16,6 +17,27 @@ public class PaqueteTuristicoController {
 
     @Autowired
     private IPaqueteTuristicoService paqueteTuristicoService;
+
+    @GetMapping(path = "/porprecio/{precio}")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoModel>> getPaqueteTuristicoByPrecio(@PathVariable("precio") float precio){
+        PaqueteTuristicoModel paquete = this.paqueteTuristicoService.findPaqueteTuristicoByPrecio(precio);
+        ApiResponse<PaqueteTuristicoModel> response = new ApiResponse<>(paquete);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porfechasalida/{fechaSalida}")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoModel>> getPaqueteTuristicoByFechaSalida(@PathVariable("fechaSalida") Date fechaSalida){
+        PaqueteTuristicoModel paquete = this.paqueteTuristicoService.findPaqueteTuristicoByFecha(fechaSalida);
+        ApiResponse<PaqueteTuristicoModel> response = new ApiResponse<>(paquete);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porprecioyfechasalida/{precio}/{fechaSalida}")
+    public ResponseEntity<ApiResponse<PaqueteTuristicoModel>> getPaqueteTuristicoByPrecioAndFechaSalida(@PathVariable("precio") float precio, @PathVariable("fechaSalida") Date fechaSalida){
+        PaqueteTuristicoModel paquete = this.paqueteTuristicoService.findPaqueteTuristicoByPrecioAndFechaSalida(precio, fechaSalida);
+        ApiResponse<PaqueteTuristicoModel> response = new ApiResponse<>(paquete);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaquetesTuristicos(){
