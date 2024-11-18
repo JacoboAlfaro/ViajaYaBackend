@@ -16,9 +16,6 @@ public class HotelController {
     @Autowired
     private HotelService hotelServicio;
 
-<<<<<<< HEAD
-    @GetMapping
-=======
 
     @GetMapping("/porciudad/{ciudad}")
     public HotelModel getHotelByCiudad(@PathVariable("ciudad") String ciudad){
@@ -37,7 +34,6 @@ public class HotelController {
     
 
     @GetMapping("/getHoteles")
->>>>>>> smuel
     public ArrayList<HotelModel> getHoteles(){
         return this.hotelServicio.getHotel();
     }

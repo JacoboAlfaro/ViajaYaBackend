@@ -14,11 +14,8 @@ public interface IPaqueteTuristicoService {
     public Optional<PaqueteTuristicoModel> getByid(Long id);
     public PaqueteTuristicoModel updateById(PaqueteTuristicoDTO request, Long id);
     public boolean deletePaquete(Long id);
-<<<<<<< HEAD
     public List<PaqueteTuristicoModel> getPaqueteById(List<Long> id);
-=======
     public PaqueteTuristicoModel findPaqueteTuristicoByPrecio(float precio);
     public PaqueteTuristicoModel findPaqueteTuristicoByFecha(Date fechaSalida);
     public PaqueteTuristicoModel findPaqueteTuristicoByPrecioAndFechaSalida(float precio, Date fechaSalida);
->>>>>>> smuel
 }

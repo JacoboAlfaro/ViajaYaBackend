@@ -11,14 +11,10 @@ import java.util.List;
 
 @Repository
 public interface IVueloRepository extends JpaRepository<VueloModel, Long> {
-<<<<<<< HEAD
     List<VueloModel> findByIdIn(List<Long> id);
-    // @Query("SELECT v FROM VueloModel v WHERE v.precio = ?1")
-    // VueloModel findVueloByPrecio(double precio);
-=======
+
     @Query("SELECT v FROM VueloModel v WHERE v.precio = ?1")
     VueloModel findVueloByPrecio(double precio);
->>>>>>> smuel
 
     @Query("SELECT v FROM VueloModel v WHERE v.fechaHoraSalida = ?1")
     VueloModel findVueloByFechaHoraSalida(LocalDateTime fechaHoraSalida);
