@@ -2,14 +2,14 @@ package com.viajaYa.viajaYa.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PaqueteTuristicoDTO {
     private String nombrePaquete;
     private String destino;
     private float precio;
     private String serviciosIncluidos;
-    private Date fechaSalida;
+    private LocalDate fechaSalida;
     @JsonProperty("idVuelo")
     private Long idVuelo;
     @JsonProperty("idHotel")
@@ -47,11 +47,11 @@ public class PaqueteTuristicoDTO {
         this.serviciosIncluidos = serviciosIncluidos;
     }
 
-    public Date getFechaSalida() {
+    public LocalDate getFechaSalida() {
         return fechaSalida;
     }
 
-    public void setFechaSalida(Date fechaSalida) {
+    public void setFechaSalida(LocalDate fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
 

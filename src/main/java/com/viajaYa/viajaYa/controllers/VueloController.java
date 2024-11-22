@@ -20,24 +20,24 @@ public class VueloController {
     private IVueloService vueloService;
 
 
-    @GetMapping(path = "/porprecio/{precio}")
-    public ResponseEntity<ApiResponse<VueloModel>> getVueloByPrecio(@PathVariable("precio") double precio){
-        VueloModel vuelo = this.vueloService.findVueloByPrecio(precio);
-        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+    @GetMapping(path = "/porprecio/{preciomin}/{preciomax}")
+    public ResponseEntity<ApiResponse<List<VueloModel>>> getVueloByPrecio(@PathVariable("preciomin") double precioMin, @PathVariable("preciomax") double precioMax){
+        List<VueloModel> vuelo = this.vueloService.findVueloByPrecio(precioMin, precioMax);
+        ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelo);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/porfechahorasalida/{fechaHoraSalida}")
-    public ResponseEntity<ApiResponse<VueloModel>> getVueloByFechaHoraSalida(@PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
-        VueloModel vuelo = this.vueloService.findVueloByFechaHoraSalida(fechaHoraSalida);
-        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+    public ResponseEntity<ApiResponse<List<VueloModel>>> findVueloByFecha(@PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
+        List<VueloModel> vuelo = this.vueloService.findVueloByFecha(fechaHoraSalida);
+        ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelo);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/porprecioyfechahorasalida/{precio}/{fechaHoraSalida}")
-    public ResponseEntity<ApiResponse<VueloModel>> getVueloByPrecioAndFechaHoraSalida(@PathVariable("precio") double precio, @PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
-        VueloModel vuelo = this.vueloService.findVueloByPrecioAndFechaHoraSalida(precio, fechaHoraSalida);
-        ApiResponse<VueloModel> response = new ApiResponse<>(vuelo);
+    @GetMapping(path = "/porprecioyfechahorasalida/{preciomin}/{preciomax}/{fechaHoraSalida}")
+    public ResponseEntity<ApiResponse<List<VueloModel>>> getVueloByPrecioAndFechaHoraSalida(@PathVariable("preciomin") double precioMin,@PathVariable("preciomax") double precioMax, @PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
+        List<VueloModel> vuelo = this.vueloService.findVueloByPrecioAndFecha(precioMin, precioMax, fechaHoraSalida);
+        ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelo);
         return ResponseEntity.ok(response);
     }
 

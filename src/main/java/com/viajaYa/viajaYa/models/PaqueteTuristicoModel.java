@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -25,7 +25,7 @@ public class PaqueteTuristicoModel {
     @Column
     private String serviciosIncluidos;
     @Column
-    private Date fechaSalida;
+    private LocalDate fechaSalida;
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "id_vuelo", nullable = true)
@@ -79,11 +79,11 @@ public class PaqueteTuristicoModel {
         this.serviciosIncluidos = serviciosIncluidos;
     }
 
-    public Date getFechaSalida() {
+    public LocalDate getFechaSalida() {
         return fechaSalida;
     }
 
-    public void setFechaSalida(Date fechaSalida) {
+    public void setFechaSalida(LocalDate fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
 

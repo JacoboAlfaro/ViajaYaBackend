@@ -15,7 +15,7 @@ public interface IVueloService {
     public boolean deleteVueloById(Long id);
     public List<VueloModel> getVueloById(List<Long> id);
 
-    public VueloModel findVueloByPrecio(double precio);
-    public VueloModel findVueloByFechaHoraSalida(LocalDateTime fechaHoraSalida);
-    public VueloModel findVueloByPrecioAndFechaHoraSalida(double precio, LocalDateTime fechaHoraSalida);
+    public List<VueloModel> findVueloByPrecio(double precioMin, double precioMax);
+    public List<VueloModel> findVueloByFecha(LocalDateTime fechaHoraSalida);
+    public List<VueloModel> findVueloByPrecioAndFecha(double precioMin,double precioMax, LocalDateTime fechaHoraSalida);
 }

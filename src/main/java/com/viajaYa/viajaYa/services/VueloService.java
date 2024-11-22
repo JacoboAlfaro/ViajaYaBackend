@@ -25,18 +25,18 @@ public class VueloService implements IVueloService {
 
 
     
-    public VueloModel findVueloByPrecio(double precio){
-        return vueloRepository.findVueloByPrecio(precio);
+    public List<VueloModel> findVueloByPrecio(double precioMin, double precioMax){
+        return vueloRepository.findVueloByPrecio(precioMin , precioMax);
     }
 
     
-    public VueloModel findVueloByFechaHoraSalida(LocalDateTime fechaHoraSalida){
-        return vueloRepository.findVueloByFechaHoraSalida(fechaHoraSalida);
+    public List<VueloModel> findVueloByFecha(LocalDateTime fechaHoraSalida){
+        return vueloRepository.findVueloByFecha(fechaHoraSalida.getYear(), fechaHoraSalida.getMonth().getValue(), fechaHoraSalida.getDayOfMonth());
     }
 
     
-    public VueloModel findVueloByPrecioAndFechaHoraSalida(double precio, LocalDateTime fechaHoraSalida){
-        return vueloRepository.findVueloByPrecioAndFechaHoraSalida(precio, fechaHoraSalida);
+    public List<VueloModel> findVueloByPrecioAndFecha(double precioMin,double precioMax, LocalDateTime fechaHoraSalida){
+        return vueloRepository.findVueloByPrecioAndFecha(precioMin, precioMax,fechaHoraSalida.getYear(), fechaHoraSalida.getMonth().getValue(), fechaHoraSalida.getDayOfMonth());
     }
 
     @Override

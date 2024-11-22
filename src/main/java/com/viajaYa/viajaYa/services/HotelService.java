@@ -23,16 +23,16 @@ public class HotelService implements IHotelService {
 
 
 
-    public HotelModel findHotelByCiudad(String ciudad){
+    public List<HotelModel> findHotelByCiudad(String ciudad){
         return hotelRepository.findHotelByCiudad(ciudad);
     }
 
-    public HotelModel findHotelByPrecioNoche(float precioNoche){
-        return hotelRepository.findHotelByPrecioNoche(precioNoche);
+    public List<HotelModel> findHotelByPrecioNoche(float precioNocheMin, float precioNocheMax){
+        return hotelRepository.findHotelByPrecioNoche(precioNocheMin, precioNocheMax);
     }
 
-    public HotelModel findHotelByCiudadAndPrecioNoche(String ciudad, float precioNoche){
-        return hotelRepository.findHotelByCiudadAndPrecioNoche(ciudad, precioNoche);
+    public List<HotelModel> findHotelByCiudadAndPrecioNoche(String ciudad, float precioNocheMin, float precioNocheMax){
+        return hotelRepository.findHotelByCiudadAndPrecioNoche(ciudad, precioNocheMin, precioNocheMax);
     }
 
     @Override

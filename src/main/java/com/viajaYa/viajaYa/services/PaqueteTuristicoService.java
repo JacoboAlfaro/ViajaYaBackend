@@ -13,8 +13,8 @@ import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,16 +32,16 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService {
     IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> mapper;
 
 
-    public PaqueteTuristicoModel findPaqueteTuristicoByPrecio(float precio){
-        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecio(precio);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecio(float precioMin, float precioMax){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecio(precioMin, precioMax);
     }
 
-    public PaqueteTuristicoModel findPaqueteTuristicoByFecha(Date fechaSalida){
-        return paqueteTuristicoRepository.findPaqueteTuristicoByFecha(fechaSalida);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByFecha(LocalDate fechaSalida){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByFecha(fechaSalida.getYear(), fechaSalida.getMonth().getValue(), fechaSalida.getDayOfMonth());
     }
 
-    public PaqueteTuristicoModel findPaqueteTuristicoByPrecioAndFechaSalida(float precio, Date fechaSalida){
-        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecioAndFechaSalida(precio, fechaSalida);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecioAndFechaSalida(float precioMin, float precioMax, LocalDate fechaSalida){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin, precioMax, fechaSalida.getYear(), fechaSalida.getMonth().getValue(), fechaSalida.getDayOfMonth());
     }
 
     @Override

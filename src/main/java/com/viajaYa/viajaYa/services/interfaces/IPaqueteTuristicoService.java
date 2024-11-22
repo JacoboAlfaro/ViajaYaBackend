@@ -4,6 +4,7 @@ import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public interface IPaqueteTuristicoService {
     public PaqueteTuristicoModel updateById(PaqueteTuristicoDTO request, Long id);
     public boolean deletePaquete(Long id);
     public List<PaqueteTuristicoModel> getPaqueteById(List<Long> id);
-    public PaqueteTuristicoModel findPaqueteTuristicoByPrecio(float precio);
-    public PaqueteTuristicoModel findPaqueteTuristicoByFecha(Date fechaSalida);
-    public PaqueteTuristicoModel findPaqueteTuristicoByPrecioAndFechaSalida(float precio, Date fechaSalida);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecio(float precioMin, float precioMax);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByFecha(LocalDate fechaSalida);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecioAndFechaSalida(float precioMin, float precioMax, LocalDate fechaSalida);
 }
