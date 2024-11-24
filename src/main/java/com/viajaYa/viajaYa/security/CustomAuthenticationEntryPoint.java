@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.naming.AuthenticationException;
 import java.io.IOException;
 
 @Component
@@ -20,7 +19,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             """
                 {
                     "respuestaExitosa": false,
-                    "message": "Debe autenticarse primero para acceder a este recurso"
+                    "mensaje": "No autorizado",
+                    "errors": {
+                        "status": 401,
+                        "title": "Unauthorized",
+                        "detail": "Token inválido o faltante."
+                    }
                 }
             """;
         response.getWriter().write(jsonResponse);

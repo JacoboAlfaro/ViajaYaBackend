@@ -1,17 +1,15 @@
 package com.viajaYa.viajaYa.controllers;
 
 import com.viajaYa.viajaYa.models.HotelModel;
-import com.viajaYa.viajaYa.models.VueloModel;
 import com.viajaYa.viajaYa.models.dtos.HotelDTO;
-import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
-import com.viajaYa.viajaYa.models.dtos.VueloDTO;
-import com.viajaYa.viajaYa.services.HotelService;
+import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,12 +19,18 @@ import java.util.Optional;
 @RequestMapping("/hotel")
 public class HotelController {
 
-    @Autowired
-    private HotelService hotelServicio;
-    @Autowired
+    // [Aplica principio de inversión de dependencias DIP]
+    private IHotelService hotelServicio;
     private IProductoServicioService<HotelDTO> productoServicioService;
-    @Autowired
-    IMapper<HotelDTO, HotelModel> mapper;
+    private IMapper<HotelDTO, HotelModel> mapper;
+
+    public HotelController(IHotelService hotelServicio,
+                           IProductoServicioService<HotelDTO> productoServicioService,
+                           IMapper<HotelDTO, HotelModel> mapper){
+        this.hotelServicio = hotelServicio;
+        this.productoServicioService = productoServicioService;
+        this.mapper = mapper;
+    }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -49,7 +53,7 @@ public class HotelController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<HotelDTO>> saveHotel(@RequestBody HotelDTO dto){
         HotelModel hotel = this.hotelServicio.saveHotel(dto);
         ApiResponse<HotelDTO> response = new ApiResponse<>(mapper.toDto(hotel));
@@ -57,7 +61,7 @@ public class HotelController {
     }
     
     @PutMapping(path = "{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<HotelDTO>> updateHotelId(@RequestBody HotelDTO request, @PathVariable("id") Long id){
         HotelModel hotel = this.hotelServicio.updateHotelId(request, id);
         ApiResponse<HotelDTO> response = new ApiResponse<>(mapper.toDto(hotel));
@@ -65,16 +69,15 @@ public class HotelController {
     }
 
     @DeleteMapping(path = "{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<String>> deleteHotelId(@PathVariable("id") Long id){
-        @SuppressWarnings("unused")
         boolean respuesta = this.hotelServicio.deleteHotelId(id);
         ApiResponse<String> response = new ApiResponse<>("Se borro el hotel con id " + id);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping(path = "addService/{idPaquete}/{idServicio}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<HotelDTO>> addService(@PathVariable("idPaquete") Long idPaquete,
                                                             @PathVariable("idServicio") Long idServicio){
         HotelDTO servicio = this.productoServicioService.addServicioAdicional(idPaquete, idServicio);
@@ -83,7 +86,7 @@ public class HotelController {
     }
 
     @PutMapping(path = "removeService/{idPaquete}/{idServicio}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<HotelDTO>> removeService(@PathVariable("idPaquete") Long idPaquete,
                                                                @PathVariable("idServicio") Long idServicio){
         HotelDTO servicio = this.productoServicioService.removeServicioAdicional(idPaquete, idServicio);

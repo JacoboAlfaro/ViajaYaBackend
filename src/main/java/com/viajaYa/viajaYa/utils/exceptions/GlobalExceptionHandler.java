@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +56,21 @@ public class GlobalExceptionHandler {
         responseBody.put("errors", errorDetails);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("respuestaExitosa", false);
+        responseBody.put("mensaje", "No tienes permisos para realizar esta acción");
+
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("status", HttpStatus.FORBIDDEN.value());
+        errorDetails.put("title", "Forbidden");
+        errorDetails.put("detail", ex.getMessage());
+        responseBody.put("errors", errorDetails);
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
     }
 
 }

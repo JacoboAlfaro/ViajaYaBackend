@@ -1,6 +1,5 @@
 package com.viajaYa.viajaYa.security.jwt;
 
-import com.viajaYa.viajaYa.models.dtos.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +12,9 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
     private String username;
     private String password;
+    private String nombre;
+    private String identificacion;
+    private String direccion;
+    private String correoElectronico;
     private int role;
-//    private UsuarioDTO user;
 }

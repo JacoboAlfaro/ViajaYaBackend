@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,15 +17,18 @@ public class UsuarioModel {
     
     private String nombre;
     private String identificacion;
-    private String contrasena;
     private String direccion;
     private String correoElectronico;
     private int rol;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private AuthUserModel authUser;
+
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<ReservaModel> reservas;
 
-    /*@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private AuthUserModel authUser;*/
+
 
 }

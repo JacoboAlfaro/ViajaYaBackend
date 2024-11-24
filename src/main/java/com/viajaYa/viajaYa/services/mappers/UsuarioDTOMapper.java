@@ -13,7 +13,6 @@ public class UsuarioDTOMapper implements IMapper<UsuarioDTO, UsuarioModel>{
         UsuarioModel usuario = new UsuarioModel();
         usuario.setNombre(dto.getNombre());
         usuario.setIdentificacion(dto.getIdentificacion());
-        usuario.setContrasena(dto.getContrasena());
         usuario.setDireccion(dto.getDireccion());
         usuario.setCorreoElectronico(dto.getCorreoElectronico());
         usuario.setRol(dto.getRol());
@@ -25,7 +24,6 @@ public class UsuarioDTOMapper implements IMapper<UsuarioDTO, UsuarioModel>{
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre(model.getNombre());
         dto.setIdentificacion(model.getIdentificacion());
-        dto.setContrasena(model.getContrasena());
         dto.setDireccion(model.getDireccion());
         dto.setCorreoElectronico(model.getCorreoElectronico());
         dto.setRol(model.getRol());

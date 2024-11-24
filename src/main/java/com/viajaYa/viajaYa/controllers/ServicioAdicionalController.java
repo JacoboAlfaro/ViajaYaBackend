@@ -7,7 +7,6 @@ import com.viajaYa.viajaYa.models.enums.TipoProdcuto;
 import com.viajaYa.viajaYa.services.interfaces.IServicioAdicionalService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +18,15 @@ import java.util.List;
 @RequestMapping("/servicioAdicional")
 public class ServicioAdicionalController {
 
-    @Autowired
+    // [Aplica principio de inversión de dependencias DIP]
     private IServicioAdicionalService servicioAdicionalService;
+    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> mapper;
 
-    @Autowired
-    IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> mapper;
+    public ServicioAdicionalController(IServicioAdicionalService servicioAdicionalService,
+                                       IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> mapper) {
+        this.servicioAdicionalService = servicioAdicionalService;
+        this.mapper = mapper;
+    }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -42,7 +45,7 @@ public class ServicioAdicionalController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<ServicioAdicionalModel>> savePaqueteTuristico(@RequestBody ServicioAdicionalRequestDTO dto){
         ServicioAdicionalModel servicio = this.servicioAdicionalService.saveServicio(mapper.toEntity(dto));
         ApiResponse<ServicioAdicionalModel> response =  new ApiResponse<>(servicio);
@@ -50,7 +53,7 @@ public class ServicioAdicionalController {
     }
 
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<ServicioAdicionalModel>> updatePaqueteTuristico(@RequestBody ServicioAdicionalRequestDTO request,
                                                                                      @PathVariable("id") Long id){
         ServicioAdicionalModel servicio = this.servicioAdicionalService.updateServicioById(mapper.toEntity(request), id);
@@ -59,7 +62,7 @@ public class ServicioAdicionalController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<String>> deletePaqueteTuristico(@PathVariable("id") Long id){
         boolean respuesta = this.servicioAdicionalService.deleteServicioById(id);
         ApiResponse<String> response = new ApiResponse<>("Se borró el servicio con id " + id);

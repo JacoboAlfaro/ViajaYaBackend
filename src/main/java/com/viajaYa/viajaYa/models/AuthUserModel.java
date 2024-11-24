@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.models;
 
-import com.viajaYa.viajaYa.models.enums.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.viajaYa.viajaYa.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,13 +34,14 @@ public class AuthUserModel implements UserDetails {
     @Column(nullable = false, columnDefinition = "int default 0", name = "rol")
     private int role; // 0: Admin, 1: Usuario normal
 
-    /*@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id") // Asegúrate de que el nombre coincide
-    private UsuarioModel usuario;*/
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
+    private UsuarioModel usuario;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + (role == 0 ? Role.ADMIN : Role.USER)));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + (role == 0 ? Roles.ROLE_ADMIN : Roles.ROLE_USER)));
     }
 
     @Override

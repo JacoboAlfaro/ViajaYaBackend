@@ -21,7 +21,7 @@ public class InformeController {
     IInformeService informeService;
 
     @GetMapping("/{mes}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<Map<String, Object>> obtenerInforme(@PathVariable int mes) {
         Map<String, Object> informe = informeService.obtenerInformeMasVendidos(mes);
         return ResponseEntity.ok(informe);

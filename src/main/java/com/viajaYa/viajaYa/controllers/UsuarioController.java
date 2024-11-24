@@ -16,6 +16,7 @@ import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
+
     @Autowired
     private IUsuarioService usuarioService;
 
@@ -35,17 +36,8 @@ public class UsuarioController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
-    @PreAuthorize("hasRole(Role.ADMIN)")
-    public ResponseEntity<ApiResponse<UsuarioModel>> saveUsuario(@RequestBody UsuarioDTO usuario){
-        UsuarioModel usuarioGuardado = this.usuarioService.saveUsuario(usuario);
-        ApiResponse<UsuarioModel> response =  new ApiResponse<>(usuarioGuardado);
-        return ResponseEntity.ok(response);
-
-    }
-
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<UsuarioModel>> updateUsuario(@RequestBody UsuarioDTO usuario,
                                                                                      @PathVariable("id") Long id){
         UsuarioModel usuarioActualizado = this.usuarioService.updateUsuarioById(usuario, id);
@@ -54,9 +46,8 @@ public class UsuarioController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<String>> deleteUsuario(@PathVariable("id") Long id){
-        @SuppressWarnings("unused")
         boolean respuesta = this.usuarioService.deleteUsuarioById(id);
         ApiResponse<String> response = new ApiResponse<>("Se borro el usuario con id " + id);
         return ResponseEntity.ok(response);

@@ -37,23 +37,18 @@ public class UsuarioService implements IUsuarioService {
     } 
 
     @Override
-    public UsuarioModel saveUsuario(UsuarioDTO dto){
-        UsuarioModel usuario = mapper.toEntity(dto);
-        return usuarioRepository.save(usuario);
-    }
-
-    @Override
     public UsuarioModel updateUsuarioById(UsuarioDTO usuario, Long id){
         UsuarioModel usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuario con id " + id + " no encontrado"));
 
+        usuarioRepository.findByIdentificacion(usuario.getIdentificacion())
+                .ifPresent(usuarioModel -> {
+                    throw new BusinessException("Ya existe un usuario con la identificacion");
+                });
+
         usuarioExistente.setNombre(usuario.getNombre());
         usuarioExistente.setIdentificacion(usuario.getIdentificacion());
-        usuarioExistente.setContrasena(usuario.getContrasena());
         usuarioExistente.setDireccion(usuario.getDireccion());
-        usuarioExistente.setCorreoElectronico(usuario.getCorreoElectronico());
-        usuarioExistente.setRol(usuario.getRol());
-
         return usuarioRepository.save(usuarioExistente);
     }
 

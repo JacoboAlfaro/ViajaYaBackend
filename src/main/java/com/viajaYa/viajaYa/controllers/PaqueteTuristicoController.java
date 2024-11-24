@@ -7,7 +7,6 @@ import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +17,18 @@ import java.util.List;
 @RequestMapping("/paqueteTuristico")
 public class PaqueteTuristicoController {
 
-    @Autowired
+    // [Aplica principio de inversión de dependencias DIP]
     private IPaqueteTuristicoService paqueteTuristicoService;
-    @Autowired
     private IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService;
-    @Autowired
     private IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> mapper;
+
+    public PaqueteTuristicoController(IPaqueteTuristicoService paqueteTuristicoService,
+                                      IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService,
+                                      IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> mapper){
+        this.paqueteTuristicoService = paqueteTuristicoService;
+        this.productoServicioService = productoServicioService;
+        this.mapper = mapper;
+    }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -42,7 +47,7 @@ public class PaqueteTuristicoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> savePaqueteTuristico(@RequestBody PaqueteTuristicoDTO dto){
         PaqueteTuristicoModel paquete = this.paqueteTuristicoService.savePaqueteTuristico(dto);
         ApiResponse<PaqueteTuristicoResponseDTO> response =  new ApiResponse<>(mapper.toDto(paquete));
@@ -51,7 +56,7 @@ public class PaqueteTuristicoController {
     }
 
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> updatePaqueteTuristico(@RequestBody PaqueteTuristicoDTO request,
                                                                                      @PathVariable("id") Long id){
         PaqueteTuristicoModel paquete = this.paqueteTuristicoService.updateById(request, id);
@@ -60,16 +65,15 @@ public class PaqueteTuristicoController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<String>> deletePaqueteTuristico(@PathVariable("id") Long id){
-        @SuppressWarnings("unused")
         boolean respuesta = this.paqueteTuristicoService.deletePaquete(id);
         ApiResponse<String> response = new ApiResponse<>("Se borró el paquete con id " + id);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping(path = "addService/{idPaquete}/{idServicio}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> addService(@PathVariable("idPaquete") Long idPaquete,
                                                                                @PathVariable("idServicio") Long idServicio){
         PaqueteTuristicoResponseDTO servicio = this.productoServicioService.addServicioAdicional(idPaquete, idServicio);
@@ -78,7 +82,7 @@ public class PaqueteTuristicoController {
     }
 
     @PutMapping(path = "removeService/{idPaquete}/{idServicio}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<PaqueteTuristicoResponseDTO>> removeService(@PathVariable("idPaquete") Long idPaquete,
                                                                                   @PathVariable("idServicio") Long idServicio){
         PaqueteTuristicoResponseDTO servicio = this.productoServicioService.removeServicioAdicional(idPaquete, idServicio);

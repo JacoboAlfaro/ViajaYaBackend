@@ -3,7 +3,6 @@ package com.viajaYa.viajaYa.models.dtos;
 public class UsuarioDTO {
     private String  nombre;
     private String  identificacion;
-    private String  contrasena;
     private String  direccion;
     private String  correoElectronico;
     private int     rol;
@@ -22,14 +21,6 @@ public class UsuarioDTO {
 
     public void setIdentificacion(String identificacion) {
         this.identificacion = identificacion;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contraseña) {
-        this.contrasena = contraseña;
     }
 
     public String getDireccion() {

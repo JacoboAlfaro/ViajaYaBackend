@@ -1,5 +1,7 @@
 package com.viajaYa.viajaYa.security.jwt;
 
+import com.viajaYa.viajaYa.utils.exceptions.TokenException;
+import com.viajaYa.viajaYa.utils.exceptions.TokenExceptionHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,36 +28,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenExceptionHandler tokenExceptionHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String token = getTokenFromRequest(request);
-        final String username;
-        final String role;
+        try {
+            final String token = getTokenFromRequest(request);
 
-        if(token == null){
-            filterChain.doFilter(request, response);
-            return;
-        }
-        username = jwtService.getUsernameFromToken(token);
-        role = jwtService.extractRole(token);
+            if (token != null) {
+                String username = jwtService.getUsernameFromToken(token);
+                String role = jwtService.extractRole(token);
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtService.isTokenValid(token, userDetails)) {
-                // Mapea "0" a "ROLE_ADMIN" y "1" a "ROLE_USER"
-                String roleName = role.equals("0") ? "ROLE_ADMIN" : "ROLE_USER";
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
-                authorities.add(new SimpleGrantedAuthority(roleName));
+                    if (jwtService.isTokenValid(token, userDetails)) {
+                        String roleName = role.equals("0") ? "ROLE_ADMIN" : "ROLE_USER";
+                        List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
+                        authorities.add(new SimpleGrantedAuthority(roleName));
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                        UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+                }
             }
-        }
-        filterChain.doFilter(request, response);
 
+            filterChain.doFilter(request, response);
+
+        } catch (TokenException ex) {
+            tokenExceptionHandler.handle(response, ex);
+        }
     }
 
     @Override

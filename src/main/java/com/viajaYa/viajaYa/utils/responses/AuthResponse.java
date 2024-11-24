@@ -10,5 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthResponse {
+    boolean respuestaExitosa;
+    String mensaje = "Proceso de token exitoso";
     String token;
 }
+

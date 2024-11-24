@@ -36,14 +36,14 @@ public class ReservaController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<ReservaModel>> saveReserva(@RequestBody ReservaDTO dto){
         ReservaModel reserva = this.reservaService.saveReserva(dto);
         ApiResponse<ReservaModel> response =  new ApiResponse<>(reserva);
         return ResponseEntity.ok(response);
     }
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<ReservaModel>> updateReserva(@RequestBody ReservaDTO request,
                                                                    @PathVariable("id") Long id){
         ReservaModel reserva = this.reservaService.updateReservaById(request, id);
@@ -51,7 +51,7 @@ public class ReservaController {
         return ResponseEntity.ok(response);
     }
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<String>> deleteReserva(@PathVariable("id") Long id){
         @SuppressWarnings("unused")
         boolean respuesta = this.reservaService.deleteReservaById(id);
@@ -59,7 +59,7 @@ public class ReservaController {
         return ResponseEntity.ok(response);
     }
     @GetMapping(path = "/usuario/{idUsuario}")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<List<ReservaModel>>> getReservasByUsuario(@PathVariable("idUsuario") Long idUsuario){
         List<ReservaModel> reservas = this.reservaService.getReservasByUsuario(idUsuario);
         ApiResponse<List<ReservaModel>> response = new ApiResponse<>(reservas);
@@ -67,7 +67,7 @@ public class ReservaController {
     }
 
     @PutMapping(path = "/{id}/confirmar")
-    @PreAuthorize("hasRole(Role.ADMIN)")
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<String>> confirmarReserva(@PathVariable("id") Long id) {
         boolean confirmada = this.reservaService.confirmarReserva(id);
         ApiResponse<String> response = new ApiResponse<>("Reserva con id " + id + " confirmada correctamente.");
