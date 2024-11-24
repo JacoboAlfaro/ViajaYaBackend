@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,19 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     @Autowired
     IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> responseMapper;
 
+
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecio(float precioMin, float precioMax){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecio(precioMin, precioMax);
+    }
+
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByFecha(LocalDate fechaSalida){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByFecha(fechaSalida.getYear(), fechaSalida.getMonth().getValue(), fechaSalida.getDayOfMonth());
+    }
+
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecioAndFechaSalida(float precioMin, float precioMax, LocalDate fechaSalida){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin, precioMax, fechaSalida.getYear(), fechaSalida.getMonth().getValue(), fechaSalida.getDayOfMonth());
+    }
+
     @Override
     public ArrayList<PaqueteTuristicoResponseDTO> getPaquetes(){
         ArrayList<PaqueteTuristicoModel> paquetes = (ArrayList<PaqueteTuristicoModel>) paqueteTuristicoRepository.findAll();
@@ -57,7 +72,6 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
 
     @Override
     public PaqueteTuristicoModel savePaqueteTuristico(PaqueteTuristicoDTO dto){
-
         PaqueteTuristicoModel paquete = mapper.toEntity(dto);
         return paqueteTuristicoRepository.save(paquete);
     }

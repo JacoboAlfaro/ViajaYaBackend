@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,22 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
 
     @Autowired
     IMapper<VueloDTO, VueloModel> mapper;
+
+
+    
+    public List<VueloModel> findVueloByPrecio(double precioMin, double precioMax){
+        return vueloRepository.findVueloByPrecio(precioMin , precioMax);
+    }
+
+    
+    public List<VueloModel> findVueloByFecha(LocalDateTime fechaHoraSalida){
+        return vueloRepository.findVueloByFecha(fechaHoraSalida.getYear(), fechaHoraSalida.getMonth().getValue(), fechaHoraSalida.getDayOfMonth());
+    }
+
+    
+    public List<VueloModel> findVueloByPrecioAndFecha(double precioMin,double precioMax, LocalDateTime fechaHoraSalida){
+        return vueloRepository.findVueloByPrecioAndFecha(precioMin, precioMax,fechaHoraSalida.getYear(), fechaHoraSalida.getMonth().getValue(), fechaHoraSalida.getDayOfMonth());
+    }
 
     @Override
     public ArrayList<VueloModel> getVuelos(){

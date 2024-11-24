@@ -16,4 +16,7 @@ public interface IHotelService {
     public HotelModel updateHotelId(HotelDTO request, Long id);
     public Boolean deleteHotelId(Long id);
     public List<HotelModel> getHotelById(List<Long> id);
+    public List<HotelModel> findHotelByCiudad(String ciudad);
+    public List<HotelModel> findHotelByPrecioNoche(float precioNocheMin, float precioNocheMax);
+    public List<HotelModel> findHotelByCiudadAndPrecioNoche(String ciudad, float precioNocheMin, float precioNocheMax);
 }

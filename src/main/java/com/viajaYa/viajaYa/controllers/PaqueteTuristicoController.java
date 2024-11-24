@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,6 +30,27 @@ public class PaqueteTuristicoController {
         this.paqueteTuristicoService = paqueteTuristicoService;
         this.productoServicioService = productoServicioService;
         this.mapper = mapper;
+    }
+
+    @GetMapping(path = "/porprecio/{preciomin}/{preciomax}")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaqueteTuristicoByPrecio(@PathVariable("preciomin") float precioMin, @PathVariable("preciomax") float precioMax){
+        List<PaqueteTuristicoModel> paquete = this.paqueteTuristicoService.findPaqueteTuristicoByPrecio(precioMin, precioMax);
+        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquete);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porfechasalida/{fechaSalida}")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaqueteTuristicoByFechaSalida(@PathVariable("fechaSalida") LocalDate fechaSalida){
+        List<PaqueteTuristicoModel> paquete = this.paqueteTuristicoService.findPaqueteTuristicoByFecha(fechaSalida);
+        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquete);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porprecioyfechasalida/{preciomin}/{preciomax}/{fechaSalida}")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaqueteTuristicoByPrecioAndFechaSalida(@PathVariable("preciomin") float precioMin,@PathVariable("preciomax") float precioMax, @PathVariable("fechaSalida") LocalDate fechaSalida){
+        List<PaqueteTuristicoModel> paquete = this.paqueteTuristicoService.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin,precioMax,fechaSalida);
+        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquete);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

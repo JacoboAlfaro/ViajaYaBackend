@@ -28,6 +28,19 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
     @Autowired
     IServicioAdicionalRepository servicioAdicionalRepository;
 
+
+    public List<HotelModel> findHotelByCiudad(String ciudad){
+        return hotelRepository.findHotelByCiudad(ciudad);
+    }
+
+    public List<HotelModel> findHotelByPrecioNoche(float precioNocheMin, float precioNocheMax){
+        return hotelRepository.findHotelByPrecioNoche(precioNocheMin, precioNocheMax);
+    }
+
+    public List<HotelModel> findHotelByCiudadAndPrecioNoche(String ciudad, float precioNocheMin, float precioNocheMax){
+        return hotelRepository.findHotelByCiudadAndPrecioNoche(ciudad, precioNocheMin, precioNocheMax);
+    }
+
     @Override
     public ArrayList<HotelModel> getHotel(){
         return (ArrayList<HotelModel>) hotelRepository.findAll();

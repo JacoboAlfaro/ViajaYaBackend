@@ -10,9 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import com.viajaYa.viajaYa.services.HotelService;
+import com.viajaYa.viajaYa.utils.responses.ApiResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -50,6 +56,32 @@ public class HotelController {
         Optional<HotelModel> hotel = this.hotelServicio.getHotelId(id);
         ApiResponse<HotelDTO> response = new ApiResponse<>(hotel.map(mapper::toDto).get());
         return ResponseEntity.ok(response);
+
+    @GetMapping("/porciudad/{ciudad}")
+    public ResponseEntity<ApiResponse<List<HotelModel>>> getHotelByCiudad(@PathVariable("ciudad") String ciudad){
+        List<HotelModel> hotel = this.hotelServicio.findHotelByCiudad(ciudad);
+        ApiResponse<List<HotelModel>> response = new ApiResponse<>(hotel);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/porprecio/{precioNochemin}/{precioNochemax}")
+    public ResponseEntity<ApiResponse<List<HotelModel>>> getHotelByPrecioNoche(@PathVariable("precioNochemin") float precioNocheMin, @PathVariable("precioNochemax") float precioNocheMax){
+        List<HotelModel> hotel = this.hotelServicio.findHotelByPrecioNoche(precioNocheMin, precioNocheMax);
+        ApiResponse<List<HotelModel>> response = new ApiResponse<>(hotel);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/porciudadyprecio/{ciudad}/{precioNochemin}/{precioNochemax}")
+    public ResponseEntity<ApiResponse<List<HotelModel>>> getHotelByCiudadAndPrecioNoche(@PathVariable("ciudad") String ciudad, @PathVariable("precioNochemin") float precioNocheMin, @PathVariable("precioNochemax") float precioNocheMax){
+        List<HotelModel> hotel = this.hotelServicio.findHotelByCiudadAndPrecioNoche(ciudad, precioNocheMin, precioNocheMax);
+        ApiResponse<List<HotelModel>> response = new ApiResponse<>(hotel);
+        return ResponseEntity.ok(response);
+    }
+    
+
+    @GetMapping("/getHoteles")
+    public ArrayList<HotelModel> getHoteles(){
+        return this.hotelServicio.getHotel();
     }
 
     @PostMapping
