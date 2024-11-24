@@ -15,23 +15,26 @@ public interface IInformeRepository extends JpaRepository<ReservaModel, Long> {
             "FROM ReservaModel r " +
             "JOIN r.paquetesTuristicos p " +
             "WHERE MONTH(r.fechaReserva) = :mes " +
+            "AND YEAR(r.fechaReserva) = :anio " +
             "GROUP BY p.nombrePaquete " +
             "ORDER BY ventas DESC")
-    List<Map<String, Object>> findPaquetesMasVendidos(@Param("mes") int mes);
+    List<Map<String, Object>> findPaquetesMasVendidos(@Param("mes") int mes,@Param("anio") int anio);
 
     @Query("SELECT v.numVuelo AS nombre, COUNT(r) AS ventas " +
             "FROM ReservaModel r " +
             "JOIN r.vuelos v " +
             "WHERE MONTH(r.fechaReserva) = :mes " +
+            "AND YEAR(r.fechaReserva) = :anio " +
             "GROUP BY v.numVuelo " +
             "ORDER BY ventas DESC")
-    List<Map<String, Object>> findVuelosMasVendidos(@Param("mes") int mes);
+    List<Map<String, Object>> findVuelosMasVendidos(@Param("mes") int mes,@Param("anio") int anio);
 
     @Query("SELECT h.nombreHotel AS nombre, COUNT(r) AS ventas " +
             "FROM ReservaModel r " +
             "JOIN r.hoteles h " +
             "WHERE MONTH(r.fechaReserva) = :mes " +
+            "AND YEAR(r.fechaReserva) = :anio " +
             "GROUP BY h.nombreHotel " +
             "ORDER BY ventas DESC")
-    List<Map<String, Object>> findHotelesMasVendidos(@Param("mes") int mes);
+    List<Map<String, Object>> findHotelesMasVendidos(@Param("mes") int mes,@Param("anio") int anio);
 }
