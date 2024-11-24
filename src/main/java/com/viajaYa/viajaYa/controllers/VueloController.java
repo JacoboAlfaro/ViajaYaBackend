@@ -34,6 +34,7 @@ public class VueloController {
 
 
     @GetMapping(path = "/porprecio/{preciomin}/{preciomax}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<VueloModel>>> getVueloByPrecio(@PathVariable("preciomin") double precioMin, @PathVariable("preciomax") double precioMax){
         List<VueloModel> vuelo = this.vueloService.findVueloByPrecio(precioMin, precioMax);
         ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelo);
@@ -41,6 +42,7 @@ public class VueloController {
     }
 
     @GetMapping(path = "/porfechahorasalida/{fechaHoraSalida}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<VueloModel>>> findVueloByFecha(@PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
         List<VueloModel> vuelo = this.vueloService.findVueloByFecha(fechaHoraSalida);
         ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelo);
@@ -48,6 +50,7 @@ public class VueloController {
     }
 
     @GetMapping(path = "/porprecioyfechahorasalida/{preciomin}/{preciomax}/{fechaHoraSalida}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<VueloModel>>> getVueloByPrecioAndFechaHoraSalida(@PathVariable("preciomin") double precioMin,@PathVariable("preciomax") double precioMax, @PathVariable("fechaHoraSalida") LocalDateTime fechaHoraSalida){
         List<VueloModel> vuelo = this.vueloService.findVueloByPrecioAndFecha(precioMin, precioMax, fechaHoraSalida);
         ApiResponse<List<VueloModel>> response = new ApiResponse<>(vuelo);

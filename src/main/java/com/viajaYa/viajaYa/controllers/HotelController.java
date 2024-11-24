@@ -4,17 +4,11 @@ import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.dtos.HotelDTO;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
+import com.viajaYa.viajaYa.services.mappers.HotelDTOMapper;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import com.viajaYa.viajaYa.services.HotelService;
-import com.viajaYa.viajaYa.utils.responses.ApiResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,11 +22,12 @@ public class HotelController {
     // [Aplica principio de inversión de dependencias DIP]
     private IHotelService hotelServicio;
     private IProductoServicioService<HotelDTO> productoServicioService;
-    private IMapper<HotelDTO, HotelModel> mapper;
+    // [Aplica segregacion de interfaz principio de ISP]
+    private HotelDTOMapper mapper;
 
     public HotelController(IHotelService hotelServicio,
                            IProductoServicioService<HotelDTO> productoServicioService,
-                           IMapper<HotelDTO, HotelModel> mapper){
+                           HotelDTOMapper mapper){
         this.hotelServicio = hotelServicio;
         this.productoServicioService = productoServicioService;
         this.mapper = mapper;
@@ -40,48 +35,42 @@ public class HotelController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<ArrayList<HotelDTO>>> getHoteles(){
+    public ResponseEntity<ApiResponse<List<HotelDTO>>> getHoteles(){
         ArrayList<HotelModel> hoteles = this.hotelServicio.getHotel();
-        ArrayList<HotelDTO> hotelesDto = hoteles.stream()
-                .map(mapper::toDto)
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-
-        ApiResponse<ArrayList<HotelDTO>> response = new ApiResponse<>(hotelesDto);
+        ApiResponse<List<HotelDTO>> response = new ApiResponse<>(mapper.toDtoList(hoteles));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<HotelDTO>> getHotelId(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponse<HotelDTO>> getHotelId(@PathVariable("id") Long id) {
         Optional<HotelModel> hotel = this.hotelServicio.getHotelId(id);
         ApiResponse<HotelDTO> response = new ApiResponse<>(hotel.map(mapper::toDto).get());
         return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/porciudad/{ciudad}")
-    public ResponseEntity<ApiResponse<List<HotelModel>>> getHotelByCiudad(@PathVariable("ciudad") String ciudad){
-        List<HotelModel> hotel = this.hotelServicio.findHotelByCiudad(ciudad);
-        ApiResponse<List<HotelModel>> response = new ApiResponse<>(hotel);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<HotelDTO>>> getHotelByCiudad(@PathVariable("ciudad") String ciudad){
+        List<HotelModel> hoteles = this.hotelServicio.findHotelByCiudad(ciudad);
+        ApiResponse<List<HotelDTO>> response = new ApiResponse<>(mapper.toDtoList(hoteles));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/porprecio/{precioNochemin}/{precioNochemax}")
-    public ResponseEntity<ApiResponse<List<HotelModel>>> getHotelByPrecioNoche(@PathVariable("precioNochemin") float precioNocheMin, @PathVariable("precioNochemax") float precioNocheMax){
-        List<HotelModel> hotel = this.hotelServicio.findHotelByPrecioNoche(precioNocheMin, precioNocheMax);
-        ApiResponse<List<HotelModel>> response = new ApiResponse<>(hotel);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<HotelDTO>>> getHotelByPrecioNoche(@PathVariable("precioNochemin") float precioNocheMin, @PathVariable("precioNochemax") float precioNocheMax){
+        List<HotelModel> hoteles = this.hotelServicio.findHotelByPrecioNoche(precioNocheMin, precioNocheMax);
+        ApiResponse<List<HotelDTO>> response = new ApiResponse<>(mapper.toDtoList(hoteles));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/porciudadyprecio/{ciudad}/{precioNochemin}/{precioNochemax}")
-    public ResponseEntity<ApiResponse<List<HotelModel>>> getHotelByCiudadAndPrecioNoche(@PathVariable("ciudad") String ciudad, @PathVariable("precioNochemin") float precioNocheMin, @PathVariable("precioNochemax") float precioNocheMax){
-        List<HotelModel> hotel = this.hotelServicio.findHotelByCiudadAndPrecioNoche(ciudad, precioNocheMin, precioNocheMax);
-        ApiResponse<List<HotelModel>> response = new ApiResponse<>(hotel);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<HotelDTO>>> getHotelByCiudadAndPrecioNoche(@PathVariable("ciudad") String ciudad, @PathVariable("precioNochemin") float precioNocheMin, @PathVariable("precioNochemax") float precioNocheMax){
+        List<HotelModel> hoteles = this.hotelServicio.findHotelByCiudadAndPrecioNoche(ciudad, precioNocheMin, precioNocheMax);
+        ApiResponse<List<HotelDTO>> response = new ApiResponse<>(mapper.toDtoList(hoteles));
         return ResponseEntity.ok(response);
-    }
-    
-
-    @GetMapping("/getHoteles")
-    public ArrayList<HotelModel> getHoteles(){
-        return this.hotelServicio.getHotel();
     }
 
     @PostMapping

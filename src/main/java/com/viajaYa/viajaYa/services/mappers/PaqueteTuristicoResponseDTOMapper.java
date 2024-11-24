@@ -4,6 +4,7 @@ import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
 import com.viajaYa.viajaYa.models.VueloModel;
+import com.viajaYa.viajaYa.models.dtos.HotelDTO;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalRequestDTO;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
@@ -86,5 +87,11 @@ public class PaqueteTuristicoResponseDTOMapper implements IMapper<PaqueteTuristi
                     .orElseThrow(() -> new BusinessException("Hotel no encontrado"));
             paquete.setHotel(hotel);
         }
+    }
+
+    public List<PaqueteTuristicoResponseDTO> toDtoList(List<PaqueteTuristicoModel> paquetes) {
+        return paquetes.stream()
+                .map(this::toDto)
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 }

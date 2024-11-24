@@ -67,6 +67,8 @@ public class ReservaService implements IReservaService {
             reserva.setHoteles(hoteles);
         }
 
+        reserva.setConfirmada(false);
+
         return reservaRepository.save(reserva);
     }
 

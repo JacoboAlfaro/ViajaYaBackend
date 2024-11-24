@@ -6,12 +6,12 @@ import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
+import com.viajaYa.viajaYa.services.mappers.PaqueteTuristicoResponseDTOMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,34 +22,37 @@ public class PaqueteTuristicoController {
     // [Aplica principio de inversión de dependencias DIP]
     private IPaqueteTuristicoService paqueteTuristicoService;
     private IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService;
-    private IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> mapper;
+    private PaqueteTuristicoResponseDTOMapper mapper;
 
     public PaqueteTuristicoController(IPaqueteTuristicoService paqueteTuristicoService,
                                       IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService,
-                                      IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> mapper){
+                                      PaqueteTuristicoResponseDTOMapper mapper){
         this.paqueteTuristicoService = paqueteTuristicoService;
         this.productoServicioService = productoServicioService;
         this.mapper = mapper;
     }
 
     @GetMapping(path = "/porprecio/{preciomin}/{preciomax}")
-    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaqueteTuristicoByPrecio(@PathVariable("preciomin") float precioMin, @PathVariable("preciomax") float precioMax){
-        List<PaqueteTuristicoModel> paquete = this.paqueteTuristicoService.findPaqueteTuristicoByPrecio(precioMin, precioMax);
-        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquete);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaqueteTuristicoByPrecio(@PathVariable("preciomin") float precioMin, @PathVariable("preciomax") float precioMax){
+        List<PaqueteTuristicoModel> paquetes = this.paqueteTuristicoService.findPaqueteTuristicoByPrecio(precioMin, precioMax);
+        ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(mapper.toDtoList(paquetes));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/porfechasalida/{fechaSalida}")
-    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaqueteTuristicoByFechaSalida(@PathVariable("fechaSalida") LocalDate fechaSalida){
-        List<PaqueteTuristicoModel> paquete = this.paqueteTuristicoService.findPaqueteTuristicoByFecha(fechaSalida);
-        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquete);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaqueteTuristicoByFechaSalida(@PathVariable("fechaSalida") LocalDate fechaSalida){
+        List<PaqueteTuristicoModel> paquetes = this.paqueteTuristicoService.findPaqueteTuristicoByFecha(fechaSalida);
+        ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(mapper.toDtoList(paquetes));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/porprecioyfechasalida/{preciomin}/{preciomax}/{fechaSalida}")
-    public ResponseEntity<ApiResponse<List<PaqueteTuristicoModel>>> getPaqueteTuristicoByPrecioAndFechaSalida(@PathVariable("preciomin") float precioMin,@PathVariable("preciomax") float precioMax, @PathVariable("fechaSalida") LocalDate fechaSalida){
-        List<PaqueteTuristicoModel> paquete = this.paqueteTuristicoService.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin,precioMax,fechaSalida);
-        ApiResponse<List<PaqueteTuristicoModel>> response = new ApiResponse<>(paquete);
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaqueteTuristicoByPrecioAndFechaSalida(@PathVariable("preciomin") float precioMin,@PathVariable("preciomax") float precioMax, @PathVariable("fechaSalida") LocalDate fechaSalida){
+        List<PaqueteTuristicoModel> paquetes = this.paqueteTuristicoService.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin,precioMax,fechaSalida);
+        ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(mapper.toDtoList(paquetes));
         return ResponseEntity.ok(response);
     }
 

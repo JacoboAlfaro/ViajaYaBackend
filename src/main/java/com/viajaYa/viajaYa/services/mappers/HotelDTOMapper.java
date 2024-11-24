@@ -51,4 +51,10 @@ public class HotelDTOMapper implements IMapper<HotelDTO, HotelModel> {
 
         return dto;
     }
+
+    public List<HotelDTO> toDtoList(List<HotelModel> hoteles) {
+        return hoteles.stream()
+                .map(this::toDto)
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
 }
