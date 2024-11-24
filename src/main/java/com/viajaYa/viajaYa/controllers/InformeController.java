@@ -20,13 +20,11 @@ public class InformeController {
     @Autowired
     IInformeService informeService;
 
-    @GetMapping("/{mes}")
-    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
-    public ResponseEntity<Map<String, Object>> obtenerInforme(@PathVariable int mes) {
-        Map<String, Object> informe = informeService.obtenerInformeMasVendidos(mes);
     @GetMapping("/{mes}/{anio}")
-    public ResponseEntity<Map<String, Object>> obtenerInforme(@PathVariable int mes, @PathVariable int anio) {
+    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> obtenerInforme(@PathVariable int mes, @PathVariable int anio) {
         Map<String, Object> informe = informeService.obtenerInformeMasVendidos(mes, anio);
-        return ResponseEntity.ok(informe);
+        ApiResponse<Map<String, Object>> response = new ApiResponse<>(informe);
+        return ResponseEntity.ok(response);
     }
 }
