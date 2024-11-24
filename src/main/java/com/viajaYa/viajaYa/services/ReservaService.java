@@ -119,7 +119,7 @@ public class ReservaService implements IReservaService {
     }
 
 
-    //Se aplica el princio OCP
+    //[Se aplica el princio OCP]
     @Override
     public boolean confirmarReserva(Long id) {
         ReservaModel reserva = reservaRepository.findById(id)
@@ -134,6 +134,7 @@ public class ReservaService implements IReservaService {
         return true;
     }
 
+    //[Se aplica el princio OCP]
     @Override
     public List<ReservaModel> getHistorialReservasByUsuario(Long idUsuario) {
         UsuarioModel usuario = usuarioRepository.findById(idUsuario)
