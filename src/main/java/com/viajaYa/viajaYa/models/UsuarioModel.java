@@ -21,7 +21,7 @@ public class UsuarioModel {
     private String correoElectronico;
     private int rol;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private AuthUserModel authUser;
 

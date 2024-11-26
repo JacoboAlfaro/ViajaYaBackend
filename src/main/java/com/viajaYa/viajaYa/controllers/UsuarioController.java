@@ -3,6 +3,8 @@ package com.viajaYa.viajaYa.controllers;
 
 import java.util.List;
 
+import com.viajaYa.viajaYa.models.dtos.UsuarioRequestDTO;
+import com.viajaYa.viajaYa.services.mappers.UsuarioRequestDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,27 +21,37 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
+    @Autowired
+    private UsuarioRequestDTOMapper mapper;
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<List<UsuarioModel>>> getUsuarios(){
+    public ResponseEntity<ApiResponse<List<UsuarioRequestDTO>>> getUsuarios(){
         List<UsuarioModel> usuarios = this.usuarioService.getUsuarios();
-        ApiResponse<List<UsuarioModel>> response = new ApiResponse<>(usuarios);
+        ApiResponse<List<UsuarioRequestDTO>> response = new ApiResponse<>(mapper.toDtoList(usuarios));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<UsuarioModel>> getUsuario(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponse<UsuarioRequestDTO>> getUsuario(@PathVariable("id") Long id){
         UsuarioModel usuario = this.usuarioService.getUsuarioById(id).get();
-        ApiResponse<UsuarioModel> response = new ApiResponse<>(usuario);
+        ApiResponse<UsuarioRequestDTO> response = new ApiResponse<>(mapper.toDto(usuario));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/porUsername/{username}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<UsuarioRequestDTO>> getUsuarioByUsername(@PathVariable("username") String username){
+        UsuarioModel usuario = this.usuarioService.getUsuarioByUsername(username).get();
+        ApiResponse<UsuarioRequestDTO> response = new ApiResponse<>(mapper.toDto(usuario));
         return ResponseEntity.ok(response);
     }
 
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
     public ResponseEntity<ApiResponse<UsuarioModel>> updateUsuario(@RequestBody UsuarioDTO usuario,
-                                                                                     @PathVariable("id") Long id){
+                                                                   @PathVariable("id") Long id){
         UsuarioModel usuarioActualizado = this.usuarioService.updateUsuarioById(usuario, id);
         ApiResponse<UsuarioModel> response = new ApiResponse<>(usuarioActualizado);
         return ResponseEntity.ok(response);

@@ -34,7 +34,7 @@ public class AuthUserModel implements UserDetails {
     @Column(nullable = false, columnDefinition = "int default 0", name = "rol")
     private int role; // 0: Admin, 1: Usuario normal
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference
     private UsuarioModel usuario;

@@ -4,6 +4,8 @@ package com.viajaYa.viajaYa.services;
 import java.util.Optional;
 import java.util.ArrayList;
 
+import com.viajaYa.viajaYa.models.AuthUserModel;
+import com.viajaYa.viajaYa.repositories.IAuthUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 public class UsuarioService implements IUsuarioService {
     @Autowired
     IUsuarioRepository usuarioRepository;
+    @Autowired
+    IAuthUserRepository authUserRepository;
     
     @Autowired
     IMapper<UsuarioDTO, UsuarioModel> mapper;
@@ -34,7 +38,22 @@ public class UsuarioService implements IUsuarioService {
             throw new BusinessException("Usuario con id " + id + " no encontrado");
         }
         return usuario;
-    } 
+    }
+
+    @Override
+    public Optional<UsuarioModel> getUsuarioByUsername(String username){
+        Optional<AuthUserModel> authUser = authUserRepository.findByUsername(username);
+        if(authUser.isEmpty()){
+            throw new BusinessException("Usuario con username " + username + " no encontrado");
+        }
+
+        Optional<UsuarioModel> usuario = usuarioRepository.findById(authUser.get().getUsuario().getId());
+        if(usuario.isEmpty()){
+            throw new BusinessException("Usuario con id " + authUser.get().getUsuario().getId() + " no encontrado");
+        }
+        return usuario;
+    }
+
 
     @Override
     public UsuarioModel updateUsuarioById(UsuarioDTO usuario, Long id){

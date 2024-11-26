@@ -9,6 +9,7 @@ import com.viajaYa.viajaYa.models.dtos.UsuarioDTO;
 public interface IUsuarioService {
     public ArrayList<UsuarioModel> getUsuarios();
     public Optional<UsuarioModel> getUsuarioById(Long id);
+    public Optional<UsuarioModel> getUsuarioByUsername(String username);
     public UsuarioModel updateUsuarioById(UsuarioDTO request,Long id);
     public boolean deleteUsuarioById(Long id);
 }
