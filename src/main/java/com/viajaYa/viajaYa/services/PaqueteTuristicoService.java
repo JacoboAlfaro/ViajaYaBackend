@@ -1,24 +1,21 @@
 package com.viajaYa.viajaYa.services;
 
-import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoDTO;
 import com.viajaYa.viajaYa.models.HotelModel;
 import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.VueloModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
+import com.viajaYa.viajaYa.models.enums.TipoProdcuto;
+import com.viajaYa.viajaYa.models.singletons.Productos;
 import com.viajaYa.viajaYa.repositories.IPaqueteTuristicoRepository;
 import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
-import com.viajaYa.viajaYa.services.interfaces.IHotelService;
-import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
-import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
-import com.viajaYa.viajaYa.services.interfaces.IVueloService;
+import com.viajaYa.viajaYa.services.interfaces.*;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +28,8 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     IPaqueteTuristicoRepository paqueteTuristicoRepository;
     @Autowired
     IServicioAdicionalRepository servicioAdicionalRepository;
+    @Autowired
+    IProductoService productoService;
     @Autowired
     IHotelService hotelService;
     @Autowired
@@ -50,7 +49,13 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     }
 
     public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecioAndFechaSalida(float precioMin, float precioMax, LocalDate fechaSalida){
-        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin, precioMax, fechaSalida.getYear(), fechaSalida.getMonth().getValue(), fechaSalida.getDayOfMonth());
+        return paqueteTuristicoRepository.findPaqueteTuristicoByPrecioAndFechaSalida(
+                precioMin, precioMax, fechaSalida.getYear(), fechaSalida.getMonth().getValue(), fechaSalida.getDayOfMonth()
+        );
+    }
+
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByDestino(String destino){
+        return paqueteTuristicoRepository.findPaqueteTuristicoByDestino(destino);
     }
 
     @Override
@@ -109,6 +114,7 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
         if(paquete.isEmpty()){
             throw new BusinessException("Paquete turistico con id " + id + " no encontrado");
         }
+        productoService.eliminarReseniasProducto(productoService.getIdProductos(TipoProdcuto.paqueteTuristicos.name()), id);
         paqueteTuristicoRepository.deleteById(id);
         return true;
     }

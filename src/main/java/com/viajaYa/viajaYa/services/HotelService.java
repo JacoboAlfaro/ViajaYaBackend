@@ -1,12 +1,12 @@
 package com.viajaYa.viajaYa.services;
 
 import com.viajaYa.viajaYa.models.HotelModel;
-import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.dtos.HotelDTO;
-import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
+import com.viajaYa.viajaYa.models.enums.TipoProdcuto;
 import com.viajaYa.viajaYa.repositories.IHotelRepository;
 import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
+import com.viajaYa.viajaYa.services.interfaces.IProductoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
@@ -27,6 +27,8 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
     IMapper<HotelDTO, HotelModel> mapper;
     @Autowired
     IServicioAdicionalRepository servicioAdicionalRepository;
+    @Autowired
+    IProductoService productoService;
 
 
     public List<HotelModel> findHotelByCiudad(String ciudad){
@@ -85,6 +87,7 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
         if(hotel.isEmpty()){
             throw new BusinessException("Hotel con id " + id + " no encontrado");
         }
+        productoService.eliminarReseniasProducto(productoService.getIdProductos(TipoProdcuto.hoteles.name()), id);
         hotelRepository.deleteById(id);
         return true;
     }
