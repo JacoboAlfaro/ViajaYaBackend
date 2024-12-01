@@ -11,6 +11,8 @@ public class ReservaDTO {
     private List<Long> idPaquetes;
     private List<Long> idVuelos;
     private List<Long> idHoteles;
+    private DetalleReservaDTO detalleReserva;
+    private FacturaDTO factura;
 
     public Long getId() {
         return id;
@@ -66,5 +68,21 @@ public class ReservaDTO {
 
     public void setIdHoteles(List<Long> idHoteles) {
         this.idHoteles = idHoteles;
+    }
+
+    public DetalleReservaDTO getDetalleReserva() {
+        return detalleReserva;
+    }
+
+    public void setDetalleReserva(DetalleReservaDTO detalleReserva) {
+        this.detalleReserva = detalleReserva;
+    }
+
+    public FacturaDTO getFactura() {
+        return factura;
+    }
+
+    public void setFactura(FacturaDTO factura) {
+        this.factura = factura;
     }
 }

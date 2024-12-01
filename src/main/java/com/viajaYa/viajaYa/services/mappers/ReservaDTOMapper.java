@@ -18,6 +18,7 @@ public class ReservaDTOMapper implements IMapper<ReservaDTO, ReservaModel> {
     @Override
     public ReservaModel toEntity(ReservaDTO dto) {
         ReservaModel reserva = new ReservaModel();
+        reserva.setId(dto.getId());
         reserva.setEstado(dto.isEstado());
         reserva.setFechaReserva(dto.getFechaReserva());
 
@@ -29,6 +30,7 @@ public class ReservaDTOMapper implements IMapper<ReservaDTO, ReservaModel> {
     @Override
     public ReservaDTO toDto(ReservaModel model) {
         ReservaDTO dto = new ReservaDTO();
+        dto.setId(model.getId());
         dto.setEstado(model.isEstado());
         dto.setFechaReserva(model.getFechaReserva());
         if (model.getUsuario() != null) {

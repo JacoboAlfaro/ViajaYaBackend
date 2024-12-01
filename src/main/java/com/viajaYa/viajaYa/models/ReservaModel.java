@@ -2,28 +2,37 @@ package com.viajaYa.viajaYa.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 
+@XmlRootElement(name = "reserva")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "reserva")
 public class ReservaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private Long id;
 
+
     @Column
+    @XmlElement
     private boolean estado;
+
 
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "id_usuario", nullable = true)
+    @XmlTransient
     private UsuarioModel usuario;
 
     @Column(name = "fecha_reserva", nullable = false)
     @Temporal(TemporalType.DATE)
+    @XmlTransient
     private Date fechaReserva;
 
     @JsonManagedReference
@@ -33,6 +42,7 @@ public class ReservaModel {
             joinColumns = @JoinColumn(name = "id_reserva", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_paquete", referencedColumnName = "id")
     )
+    @XmlTransient
     private List<PaqueteTuristicoModel> paquetesTuristicos;
 
     @JsonManagedReference
@@ -42,7 +52,13 @@ public class ReservaModel {
             joinColumns = @JoinColumn(name = "id_reserva", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_vuelo", referencedColumnName = "id")
     )
+    @XmlTransient
     private List<VueloModel> vuelos;
+
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @XmlTransient
+    private DetalleReservaModel detalleReserva;
 
     @JsonManagedReference
     @ManyToMany
@@ -51,9 +67,16 @@ public class ReservaModel {
             joinColumns = @JoinColumn(name = "id_reserva", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_hotel", referencedColumnName = "id")
     )
+    @XmlTransient
     private List<HotelModel> hoteles;
 
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @XmlTransient
+    private FacturaModel factura;
+
     @Column
+    @XmlElement
     private boolean confirmada;
 
     public Long getId() {
@@ -118,5 +141,21 @@ public class ReservaModel {
 
     public void setPaquetesTuristicos(List<PaqueteTuristicoModel> paquetesTuristicos) {
         this.paquetesTuristicos = paquetesTuristicos;
+    }
+
+    public DetalleReservaModel getDetalleReserva() {
+        return detalleReserva;
+    }
+
+    public void setDetalleReserva(DetalleReservaModel detalleReserva) {
+        this.detalleReserva = detalleReserva;
+    }
+
+    public FacturaModel getFactura() {
+        return factura;
+    }
+
+    public void setFactura(FacturaModel factura) {
+        this.factura = factura;
     }
 }

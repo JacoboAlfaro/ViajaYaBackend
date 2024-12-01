@@ -1,9 +1,6 @@
 package com.viajaYa.viajaYa.services.mappers;
 
-import com.viajaYa.viajaYa.models.HotelModel;
-import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
-import com.viajaYa.viajaYa.models.ReservaModel;
-import com.viajaYa.viajaYa.models.VueloModel;
+import com.viajaYa.viajaYa.models.*;
 import com.viajaYa.viajaYa.models.dtos.*;
 import com.viajaYa.viajaYa.services.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,8 @@ public class ReservaResponseDTOMapper implements IMapper<ReservaResponseDTO, Res
     IMapper<VueloDTO, VueloModel> vueloMapper;
     @Autowired
     IMapper<HotelDTO, HotelModel> hotelMapper;
+    @Autowired
+    IMapper<DetalleReservaDTO, DetalleReservaModel> detalleReservaMapper;
 
     @Override
     public ReservaModel toEntity(ReservaResponseDTO dto) {
@@ -67,6 +66,12 @@ public class ReservaResponseDTOMapper implements IMapper<ReservaResponseDTO, Res
         dto.setHoteles(entity.getHoteles().stream()
                 .map(hotel -> hotelMapper.toDto(hotel))
                 .collect(Collectors.toList()));
+
+        if(entity.getDetalleReserva() != null) {
+            dto.setDetalleReserva(detalleReservaMapper.toDto(entity.getDetalleReserva()));
+        } else {
+            dto.setDetalleReserva(null);
+        }
 
         return dto;
     }

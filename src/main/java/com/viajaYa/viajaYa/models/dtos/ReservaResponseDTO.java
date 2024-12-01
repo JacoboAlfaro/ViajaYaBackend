@@ -15,4 +15,6 @@ public class ReservaResponseDTO {
     private List<VueloDTO> vuelos;
     private List<HotelDTO> hoteles;
     private boolean confirmada;
+    private DetalleReservaDTO detalleReserva;
+    private FacturaDTO factura;
 }
