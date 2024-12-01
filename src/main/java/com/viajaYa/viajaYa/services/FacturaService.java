@@ -1,6 +1,7 @@
 package com.viajaYa.viajaYa.services;
 
 import com.viajaYa.viajaYa.models.FacturaModel;
+import com.viajaYa.viajaYa.models.ReservaModel;
 import com.viajaYa.viajaYa.models.dtos.FacturaDTO;
 import com.viajaYa.viajaYa.repositories.IFacturaRepository;
 import com.viajaYa.viajaYa.services.interfaces.IFacturaService;
@@ -33,6 +34,21 @@ public class FacturaService  implements IFacturaService {
 
 
         return mapper.toDto(facturaRepository.save(factura));
+    }
+
+    private double calcularPrecioTotal(ReservaModel reserva){
+        double total = 0;
+
+        if(reserva.getVuelos() != null){
+            total+=reserva.getVuelos().stream().mapToDouble(vuelo -> vuelo.getPrecio()).sum();
+        }
+        if(reserva.getHoteles() != null){
+            total+=reserva.getHoteles().stream().mapToDouble(hotel -> hotel.getPrecioNoche()).sum();
+        }
+        if(reserva.getPaquetesTuristicos() != null){
+            total+=reserva.getPaquetesTuristicos().stream().mapToDouble(paquete -> paquete.getPrecio()).sum();
+        }
+        return total;
     }
 
 
