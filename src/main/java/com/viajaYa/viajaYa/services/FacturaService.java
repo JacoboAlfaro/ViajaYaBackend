@@ -6,6 +6,7 @@ import com.viajaYa.viajaYa.models.dtos.FacturaDTO;
 import com.viajaYa.viajaYa.repositories.IFacturaRepository;
 import com.viajaYa.viajaYa.services.interfaces.IFacturaService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
+import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.xml.bind.JAXBContext;
@@ -63,7 +64,7 @@ public class FacturaService  implements IFacturaService {
 
             return writer.toString();
         } catch (Exception e) {
-            throw new RuntimeException("Error al convertir la factura a XML", e);
+            throw new BusinessException("Error al convertir la factura a XML", e);
         }
     }
 
@@ -76,7 +77,7 @@ public class FacturaService  implements IFacturaService {
     public Optional<FacturaModel> getFacturaById(Long id){
         Optional<FacturaModel> factura = facturaRepository.findById(id);
         if (factura.isEmpty()) {
-            throw new RuntimeException("Factura con id " + id + " no encontrada");
+            throw new BusinessException("Factura con id " + id + " no encontrada");
         }
         return factura;
     }
