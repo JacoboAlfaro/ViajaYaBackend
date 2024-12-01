@@ -21,5 +21,7 @@ public interface IPaqueteTuristicoRepository extends JpaRepository<PaqueteTurist
 
     @Query("SELECT p FROM PaqueteTuristicoModel p WHERE p.precio BETWEEN ?1 AND ?2 AND YEAR(p.fechaSalida) = ?3 AND MONTH(p.fechaSalida) = ?4 AND DAY(p.fechaSalida) = ?5")
     List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecioAndFechaSalida(float precioMin, float precioMax, int year, int month, int day);
-    
+
+    @Query("SELECT p FROM PaqueteTuristicoModel p WHERE p.destino = ?1")
+    List<PaqueteTuristicoModel> findPaqueteTuristicoByDestino(String destino);
 }

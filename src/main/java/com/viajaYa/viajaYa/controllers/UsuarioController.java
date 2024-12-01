@@ -50,10 +50,10 @@ public class UsuarioController {
 
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
-    public ResponseEntity<ApiResponse<UsuarioModel>> updateUsuario(@RequestBody UsuarioDTO usuario,
+    public ResponseEntity<ApiResponse<UsuarioRequestDTO>> updateUsuario(@RequestBody UsuarioDTO usuario,
                                                                    @PathVariable("id") Long id){
         UsuarioModel usuarioActualizado = this.usuarioService.updateUsuarioById(usuario, id);
-        ApiResponse<UsuarioModel> response = new ApiResponse<>(usuarioActualizado);
+        ApiResponse<UsuarioRequestDTO> response = new ApiResponse<>(mapper.toDto(usuarioActualizado));
         return ResponseEntity.ok(response);
     }
 

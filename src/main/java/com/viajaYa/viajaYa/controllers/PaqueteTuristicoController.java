@@ -5,7 +5,6 @@ import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.services.interfaces.IPaqueteTuristicoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
-import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.services.mappers.PaqueteTuristicoResponseDTOMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +51,14 @@ public class PaqueteTuristicoController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaqueteTuristicoByPrecioAndFechaSalida(@PathVariable("preciomin") float precioMin,@PathVariable("preciomax") float precioMax, @PathVariable("fechaSalida") LocalDate fechaSalida){
         List<PaqueteTuristicoModel> paquetes = this.paqueteTuristicoService.findPaqueteTuristicoByPrecioAndFechaSalida(precioMin,precioMax,fechaSalida);
+        ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(mapper.toDtoList(paquetes));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/pordestino/{destino}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<PaqueteTuristicoResponseDTO>>> getPaqueteTuristicoByDestino(@PathVariable("destino") String destino){
+        List<PaqueteTuristicoModel> paquetes = this.paqueteTuristicoService.findPaqueteTuristicoByDestino(destino);
         ApiResponse<List<PaqueteTuristicoResponseDTO>> response = new ApiResponse<>(mapper.toDtoList(paquetes));
         return ResponseEntity.ok(response);
     }

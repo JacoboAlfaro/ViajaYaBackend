@@ -20,4 +20,5 @@ public interface IPaqueteTuristicoService {
     public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecio(float precioMin, float precioMax);
     public List<PaqueteTuristicoModel> findPaqueteTuristicoByFecha(LocalDate fechaSalida);
     public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecioAndFechaSalida(float precioMin, float precioMax, LocalDate fechaSalida);
+    public List<PaqueteTuristicoModel> findPaqueteTuristicoByDestino(String destino);
 }

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
-import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
+import com.viajaYa.viajaYa.models.enums.TipoProdcuto;
 import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
+import com.viajaYa.viajaYa.services.interfaces.IProductoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,9 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
 
     @Autowired
     IMapper<VueloDTO, VueloModel> mapper;
+
+    @Autowired
+    IProductoService productoService;
 
 
     
@@ -91,6 +94,7 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
         if(vuelo.isEmpty()){
             throw new BusinessException("El vuelo con id " + id + " no encontrado");
         }
+        productoService.eliminarReseniasProducto(productoService.getIdProductos(TipoProdcuto.vuelos.name()), id);
         vueloRepository.deleteById(id);
         return true;
     }

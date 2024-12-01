@@ -5,7 +5,6 @@ import com.viajaYa.viajaYa.models.dtos.HotelDTO;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.HotelDTOMapper;
-import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

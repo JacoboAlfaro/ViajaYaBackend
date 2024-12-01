@@ -29,6 +29,6 @@ public class UsuarioModel {
     @JsonBackReference
     private List<ReservaModel> reservas;
 
-
-
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+    private List<ReseniaModel> resenias;
 }
