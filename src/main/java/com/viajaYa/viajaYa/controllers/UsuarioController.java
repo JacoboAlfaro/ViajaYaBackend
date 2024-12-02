@@ -20,7 +20,7 @@ import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 public class UsuarioController {
 
     @Autowired
-    private IUsuarioService usuarioService;
+    private IUsuarioService usuarioService; //[Aplicando Polimorfismo]
     @Autowired
     private UsuarioRequestDTOMapper mapper;
 

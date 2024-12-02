@@ -20,7 +20,7 @@ public class PaqueteTuristicoController {
 
     // [Aplica principio de inversión de dependencias DIP]
     private IPaqueteTuristicoService paqueteTuristicoService;
-    private IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService;
+    private IProductoServicioService<PaqueteTuristicoResponseDTO> productoServicioService; //[Aplicando Polimorfismo]
     private PaqueteTuristicoResponseDTOMapper mapper;
 
     public PaqueteTuristicoController(IPaqueteTuristicoService paqueteTuristicoService,

@@ -24,7 +24,7 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
     @Autowired
     IHotelRepository hotelRepository;
     @Autowired
-    IMapper<HotelDTO, HotelModel> mapper;
+    IMapper<HotelDTO, HotelModel> mapper; //[Aplicando sustitución de Liskov LSP]
     @Autowired
     IServicioAdicionalRepository servicioAdicionalRepository;
     @Autowired

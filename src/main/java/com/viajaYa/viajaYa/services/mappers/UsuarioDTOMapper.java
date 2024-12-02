@@ -8,9 +8,10 @@ import com.viajaYa.viajaYa.models.dtos.UsuarioDTO;
 @Component
 public class UsuarioDTOMapper implements IMapper<UsuarioDTO, UsuarioModel>{
 
+    //[Aplicando principio DRY]
     @Override
     public UsuarioModel toEntity(UsuarioDTO dto) {
-        UsuarioModel usuario = new UsuarioModel();
+        UsuarioModel usuario = new UsuarioModel(); //[Aplicando principio Creador]
         usuario.setNombre(dto.getNombre());
         usuario.setIdentificacion(dto.getIdentificacion());
         usuario.setDireccion(dto.getDireccion());
@@ -21,7 +22,7 @@ public class UsuarioDTOMapper implements IMapper<UsuarioDTO, UsuarioModel>{
 
     @Override
     public UsuarioDTO toDto(UsuarioModel model) {
-        UsuarioDTO dto = new UsuarioDTO();
+        UsuarioDTO dto = new UsuarioDTO(); //[Aplicando principio Creador]
         dto.setNombre(model.getNombre());
         dto.setIdentificacion(model.getIdentificacion());
         dto.setDireccion(model.getDireccion());

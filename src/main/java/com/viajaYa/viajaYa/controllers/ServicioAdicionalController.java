@@ -19,8 +19,8 @@ import java.util.List;
 public class ServicioAdicionalController {
 
     // [Aplica principio de inversión de dependencias DIP]
-    private IServicioAdicionalService servicioAdicionalService;
-    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> mapper;
+    private IServicioAdicionalService servicioAdicionalService; //[Aplicando Polimorfismo]
+    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> mapper; //[Aplicando Polimorfismo]
 
     public ServicioAdicionalController(IServicioAdicionalService servicioAdicionalService,
                                        IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> mapper) {

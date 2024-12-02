@@ -16,7 +16,7 @@ public class UsuarioRequestDTOMapper implements IMapper<UsuarioRequestDTO, Usuar
     private IAuthUserRepository authUserRepository;
     @Override
     public UsuarioModel toEntity(UsuarioRequestDTO dto) {
-        UsuarioModel usuario = new UsuarioModel();
+        UsuarioModel usuario = new UsuarioModel(); //[Aplicando principio Creador]
         usuario.setId(dto.getId());
         usuario.setNombre(dto.getNombre());
         usuario.setIdentificacion(dto.getIdentificacion());
@@ -30,7 +30,7 @@ public class UsuarioRequestDTOMapper implements IMapper<UsuarioRequestDTO, Usuar
 
     @Override
     public UsuarioRequestDTO toDto(UsuarioModel entity) {
-        UsuarioRequestDTO dto = new UsuarioRequestDTO();
+        UsuarioRequestDTO dto = new UsuarioRequestDTO(); //[Aplicando principio Creador]
         dto.setId(entity.getId());
         dto.setNombre(entity.getNombre());
         dto.setIdentificacion(entity.getIdentificacion());

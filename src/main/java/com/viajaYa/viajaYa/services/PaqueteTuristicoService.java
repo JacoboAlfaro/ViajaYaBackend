@@ -35,9 +35,9 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     @Autowired
     IVueloService vueloService;
     @Autowired
-    IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> mapper;
+    IMapper<PaqueteTuristicoDTO, PaqueteTuristicoModel> mapper; //[Aplicando sustitución de Liskov LSP]
     @Autowired
-    IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> responseMapper;
+    IMapper<PaqueteTuristicoResponseDTO, PaqueteTuristicoModel> responseMapper; //[Aplicando sustitución de Liskov LSP]
 
 
     public List<PaqueteTuristicoModel> findPaqueteTuristicoByPrecio(float precioMin, float precioMax){

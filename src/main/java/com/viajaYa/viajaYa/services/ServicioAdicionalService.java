@@ -22,9 +22,9 @@ public class ServicioAdicionalService implements IServicioAdicionalService {
     private IServicioAdicionalRepository servicioAdicionalRepository;
 
     @Autowired
-    private IMapper<ServicioAdicionalDTO, ServicioAdicionalModel> mapper;
+    private IMapper<ServicioAdicionalDTO, ServicioAdicionalModel> mapper; //[Aplicando sustitución de Liskov LSP]
     @Autowired
-    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalModel> mapperDto;
+    private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalModel> mapperDto; //[Aplicando sustitución de Liskov LSP]
 
     @Override
     public ArrayList<ServicioAdicionalDTO> getServicios() {
@@ -76,7 +76,7 @@ public class ServicioAdicionalService implements IServicioAdicionalService {
         return true;
     }
 
-    // DRY [Implementación de principio dry en el siguiente metodo]
+    // DRY [Implementación de principio DRY en el siguiente metodo]
     @Override
     public ArrayList<ServicioAdicionalRequestDTO> getServiciosByRelacionId(String tipoProducto, Long relacionId) {
         ArrayList<ServicioAdicionalModel> servicios = switch (tipoProducto) {

@@ -20,9 +20,9 @@ import com.viajaYa.viajaYa.utils.responses.ApiResponse;
 public class VueloController {
 
     // [Aplica principio de inversión de dependencias DIP]
-    private IVueloService vueloService;
-    private IProductoServicioService<VueloDTO> productoServicioService;
-    private IMapper<VueloDTO, VueloModel> mapper;
+    private IVueloService vueloService; //[Aplicando Polimorfismo]
+    private IProductoServicioService<VueloDTO> productoServicioService; //[Aplicando Polimorfismo]
+    private IMapper<VueloDTO, VueloModel> mapper; //[Aplicando Polimorfismo]
 
     public VueloController(IVueloService vueloService,
                            IProductoServicioService<VueloDTO> productoServicioService,

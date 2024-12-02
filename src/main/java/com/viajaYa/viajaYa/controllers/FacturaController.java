@@ -17,7 +17,7 @@ import java.util.List;
 public class FacturaController {
 
     @Autowired
-    IFacturaService facturaService;
+    IFacturaService facturaService; //[Aplicando Polimorfismo]
 
     @Autowired
     FacturaDTOMapper mapper;
@@ -45,6 +45,15 @@ public class FacturaController {
         FacturaModel factura = this.facturaService.getFacturaById(id).get();
         FacturaDTO facturaDto = mapper.toDto(factura);
         ApiResponse<FacturaDTO> response = new ApiResponse<>(facturaDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/usuario/{idUsuario}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<FacturaDTO>>> getFacturasByUsuario(@PathVariable("idUsuario") Long idUsuario) {
+        List<FacturaModel> facturas = this.facturaService.getFacturasByUsuario(idUsuario);
+        List<FacturaDTO> facturasDto = facturas.stream().map(mapper::toDto).toList();
+        ApiResponse<List<FacturaDTO>> response = new ApiResponse<>(facturasDto);
         return ResponseEntity.ok(response);
     }
 }

@@ -16,6 +16,7 @@ import com.viajaYa.viajaYa.services.interfaces.IUsuarioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 
+//[Aplicando principio experto de información]
 @Service
 public class UsuarioService implements IUsuarioService {
     @Autowired
@@ -24,7 +25,7 @@ public class UsuarioService implements IUsuarioService {
     IAuthUserRepository authUserRepository;
     
     @Autowired
-    IMapper<UsuarioDTO, UsuarioModel> mapper;
+    IMapper<UsuarioDTO, UsuarioModel> mapper; //[Aplicando Polimorfismo]
 
     @Override
     public ArrayList<UsuarioModel> getUsuarios(){

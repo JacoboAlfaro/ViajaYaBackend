@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.Optional;
 
+//[Aplicando principio experto de información]
 @Service
 public class DetalleReservaService implements IDetalleReservaService {
 
@@ -26,7 +27,7 @@ public class DetalleReservaService implements IDetalleReservaService {
     @Autowired
     IMapper<DetalleReservaDTO, DetalleReservaModel> mapper;
 
-
+    //[Aplicando principio Alta cohesion y bajo acoplamiento]
     @Override
     public DetalleReservaModel saveDetalleReserva(DetalleReservaDTO dto) {
         if (dto.getIdReserva() == null) {

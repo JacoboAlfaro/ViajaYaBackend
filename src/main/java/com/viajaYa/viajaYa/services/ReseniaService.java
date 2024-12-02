@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//[Aplicando principio experto de información]
 @Service
 public class ReseniaService implements IReseniaService {
 

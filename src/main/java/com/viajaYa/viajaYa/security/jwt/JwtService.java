@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+//[Aplicando principio Alta cohesion y bajo acoplamiento]
 @Service
 public class JwtService {
 

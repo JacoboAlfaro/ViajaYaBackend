@@ -14,7 +14,7 @@ import java.util.Map;
 public class InformeController {
 
     @Autowired
-    IInformeService informeService;
+    IInformeService informeService; //[Aplicando Polimorfismo]
 
     @GetMapping("/{mes}/{anio}")
     @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")

@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 public class DetalleReservaController {
 
     @Autowired
-    private IDetalleReservaService detalleReservaService;
+    private IDetalleReservaService detalleReservaService; //[Aplicando Polimorfismo]
 
     @Autowired
-    private IMapper<DetalleReservaDTO, DetalleReservaModel> mapper;
+    private IMapper<DetalleReservaDTO, DetalleReservaModel> mapper;//[Aplicando Polimorfismo]
 
 
     @GetMapping(path = "/{idReserva}")

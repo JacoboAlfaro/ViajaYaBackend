@@ -19,9 +19,9 @@ import java.util.Optional;
 public class HotelController {
 
     // [Aplica principio de inversión de dependencias DIP]
-    private IHotelService hotelServicio;
-    private IProductoServicioService<HotelDTO> productoServicioService;
-    // [Aplica segregacion de interfaz principio de ISP]
+    private IHotelService hotelServicio;  //[Aplicando Polimorfismo]
+    private IProductoServicioService<HotelDTO> productoServicioService; //[Aplicando Polimorfismo]
+    // [Aplica segregación de interfaz principio de ISP]
     private HotelDTOMapper mapper;
 
     public HotelController(IHotelService hotelServicio,

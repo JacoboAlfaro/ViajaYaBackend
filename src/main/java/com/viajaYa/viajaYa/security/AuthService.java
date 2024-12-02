@@ -66,7 +66,7 @@ public class AuthService implements IAuthService {
             throw new BusinessException("El rol ingresado no es válido");
         }
 
-        UsuarioModel usuario = new UsuarioModel();
+        UsuarioModel usuario = new UsuarioModel(); //[Aplicando principio Creador]
         usuario.setNombre(request.getNombre());
         usuario.setIdentificacion(request.getIdentificacion());
         usuario.setDireccion(request.getDireccion());

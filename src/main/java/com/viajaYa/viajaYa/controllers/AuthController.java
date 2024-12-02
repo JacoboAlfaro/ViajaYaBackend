@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     // [Aplica principio de inversión de dependencias DIP]
-    private final IAuthService authService;
+    private final IAuthService authService; //[Aplicando Polimorfismo]
 
     public AuthController(IAuthService authService) {
         this.authService = authService;

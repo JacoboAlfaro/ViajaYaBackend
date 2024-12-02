@@ -19,9 +19,9 @@ import java.util.List;
 public class ReservaController {
 
     @Autowired
-    private IReservaService reservaService;
+    private IReservaService reservaService; //[Aplicando Polimorfismo]
     @Autowired
-    private IMapper<ReservaResponseDTO, ReservaModel> mapper;
+    private IMapper<ReservaResponseDTO, ReservaModel> mapper; //[Aplicando Polimorfismo]
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -66,7 +66,7 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/usuario/{idUsuario}")
-    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<ReservaResponseDTO>>> getReservasByUsuario(@PathVariable("idUsuario") Long idUsuario){
         List<ReservaModel> reservas = this.reservaService.getReservasByUsuario(idUsuario);
         List<ReservaResponseDTO> reservasDto = reservas.stream().map(mapper::toDto).toList();

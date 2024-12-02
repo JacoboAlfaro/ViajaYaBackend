@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         responseBody.put("respuestaExitosa", false);
         responseBody.put("mensaje", "Error con el proceso");
 
-        Map<String, Object> errorDetails = new HashMap<>();
+        Map<String, Object> errorDetails = new HashMap<>(); //[Aplicando principio Creador]
         errorDetails.put("status", HttpStatus.BAD_REQUEST.value());
         errorDetails.put("title", "Bad Request");
         errorDetails.put("detail", ex.getMessage());
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         responseBody.put("respuestaExitosa", false);
         responseBody.put("mensaje", "Error con el proceso");
 
-        Map<String, Object> errorDetails = new HashMap<>();
+        Map<String, Object> errorDetails = new HashMap<>(); //[Aplicando principio Creador]
         errorDetails.put("status", HttpStatus.UNAUTHORIZED.value());
         errorDetails.put("title", "Unauthorized");
         errorDetails.put("detail", ex.getMessage());

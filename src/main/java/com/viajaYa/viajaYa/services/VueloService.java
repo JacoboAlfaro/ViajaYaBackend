@@ -30,7 +30,7 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
     IServicioAdicionalRepository servicioAdicionalRepository;
 
     @Autowired
-    IMapper<VueloDTO, VueloModel> mapper;
+    IMapper<VueloDTO, VueloModel> mapper; //[Aplicando sustitución de Liskov LSP, Polimorfismo]
 
     @Autowired
     IProductoService productoService;

@@ -17,6 +17,7 @@ public class VueloDTOMapper implements IMapper<VueloDTO, VueloModel> {
     @Autowired
     private IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalModel> servicioAdicionalDTOMapper;
 
+    //[Aplicando principio DRY]
     @Override
     public VueloModel toEntity(VueloDTO dto) {
         VueloModel vuelo = new VueloModel();

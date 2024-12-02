@@ -9,6 +9,7 @@ import java.util.ArrayList;
 @Component
 public class ServicioAdicionalRequestDTOMapper implements IMapper<ServicioAdicionalRequestDTO, ServicioAdicionalDTO> {
 
+    //[Aplicando principio DRY]
     @Override
     public ServicioAdicionalDTO toEntity(ServicioAdicionalRequestDTO dto) {
         ServicioAdicionalDTO entity = new ServicioAdicionalDTO();
