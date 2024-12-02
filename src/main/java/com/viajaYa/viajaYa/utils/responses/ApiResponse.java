@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.utils.responses;
 
+//[Se aplica princio DRY]
 public class ApiResponse<T> {
 
     private boolean respuestaExitosa;

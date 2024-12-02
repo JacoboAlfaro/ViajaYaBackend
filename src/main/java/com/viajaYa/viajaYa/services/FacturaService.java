@@ -60,6 +60,7 @@ public class FacturaService  implements IFacturaService {
     }
 
 
+    //[Aplica principio OCP]
     private String convertirFacturaToXML(FacturaModel factura) {
         try {
             JAXBContext context = JAXBContext.newInstance(FacturaModel.class);

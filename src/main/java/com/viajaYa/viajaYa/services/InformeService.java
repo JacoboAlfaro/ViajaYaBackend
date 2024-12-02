@@ -28,6 +28,7 @@ public class InformeService implements IInformeService {
         List<Map<String, Object>> vuelos = informeRepository.findVuelosMasVendidos(mes, anio);
         List<Map<String, Object>> hoteles = informeRepository.findHotelesMasVendidos(mes, anio);
 
+        //[Se aplica el princiopio de creador]
         Map<String, Object> informe = new HashMap<>();
         informe.put("paquetesTuristicos", paquetes);
         informe.put("vuelos", vuelos);
