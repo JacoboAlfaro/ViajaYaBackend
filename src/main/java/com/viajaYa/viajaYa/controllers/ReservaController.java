@@ -7,6 +7,7 @@ import com.viajaYa.viajaYa.models.dtos.ReservaResponseDTO;
 import com.viajaYa.viajaYa.services.interfaces.IReservaService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
 import com.viajaYa.viajaYa.utils.responses.ApiResponse;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -90,4 +91,12 @@ public class ReservaController {
         ApiResponse<List<ReservaResponseDTO>> response = new ApiResponse<>(reservasDto);
         return ResponseEntity.ok(response);
     }
+    @GetMapping(path = "{id}/total")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<List<Integer>>> getTotalReserva(@PathVariable("id") Long id){
+        List<Integer> total = reservaService.calcularTotalPorReserva(id);
+        ApiResponse<List<Integer>> response = new ApiResponse<>(total);
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -9,6 +9,8 @@ import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
+import com.viajaYa.viajaYa.services.patterns.factory.HotelFactory;
+import com.viajaYa.viajaYa.services.patterns.iterator.HotelIterator;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,8 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
 
     @Override
     public HotelModel saveHotel(HotelDTO dto){
-        HotelModel hotel = mapper.toEntity(dto);
+        //[Aplicando patron factory method]
+        HotelModel hotel = HotelFactory.crearHotel(dto);
         return hotelRepository.save(hotel);
     }
 

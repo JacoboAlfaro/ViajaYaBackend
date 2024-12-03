@@ -9,6 +9,8 @@ import com.viajaYa.viajaYa.models.enums.TipoProdcuto;
 import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
 import com.viajaYa.viajaYa.services.interfaces.IProductoService;
 import com.viajaYa.viajaYa.services.interfaces.IProductoServicioService;
+import com.viajaYa.viajaYa.services.patterns.factory.VueloFactory;
+import com.viajaYa.viajaYa.services.patterns.iterator.VueloIterator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +68,8 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
     }
     @Override
     public VueloModel saveVuelo(VueloDTO dto){
-        VueloModel vuelo = mapper.toEntity(dto);
+        //[Aplicando patron factory method]
+        VueloModel vuelo = VueloFactory.crearVuelo(dto);
         return vueloRepository.save(vuelo);
     }
 
@@ -146,4 +149,5 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
         }
         return vuelos;
     }
+
 }

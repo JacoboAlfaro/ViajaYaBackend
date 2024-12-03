@@ -6,8 +6,8 @@ import com.viajaYa.viajaYa.models.dtos.FacturaDTO;
 import com.viajaYa.viajaYa.repositories.IFacturaRepository;
 import com.viajaYa.viajaYa.repositories.IReservaRepository;
 import com.viajaYa.viajaYa.services.interfaces.IFacturaService;
-import com.viajaYa.viajaYa.services.interfaces.IReservaService;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
+import com.viajaYa.viajaYa.services.patterns.factory.FacturaFactory;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,8 @@ public class FacturaService  implements IFacturaService {
 
     @Override
     public FacturaDTO generateFactura(FacturaDTO facturad) {
-        FacturaModel factura = mapper.toEntity(facturad);
+        //[Aplicando patron factory method]
+        FacturaModel factura = FacturaFactory.crearFactura(facturad);
 
         String xml = convertirFacturaToXML(factura);
         factura.setXml(xml);
