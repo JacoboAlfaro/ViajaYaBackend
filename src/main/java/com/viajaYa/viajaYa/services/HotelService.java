@@ -105,7 +105,7 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
     @Override
     @Transactional
     public HotelDTO addServicioAdicional(Long idHotel, Long idServicio){
-        HotelModel hotel = obtenerProdcutoConServicio(idHotel, idServicio);
+        HotelModel hotel = obtenerProductoConServicio(idHotel, idServicio);
 
         if (hotel.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
             throw new BusinessException("El servicio adicional con id " + idServicio + " ya se encuentra en el hotel");
@@ -119,7 +119,7 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
     @Override
     @Transactional
     public HotelDTO removeServicioAdicional(Long idHotel, Long idServicio) {
-        HotelModel paquete = obtenerProdcutoConServicio(idHotel, idServicio);
+        HotelModel paquete = obtenerProductoConServicio(idHotel, idServicio);
 
         if (!paquete.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
             throw new BusinessException("El servicio adicional con id " + idServicio + " no está asociado al hotel");
@@ -132,7 +132,7 @@ public class HotelService implements IHotelService, IProductoServicioService<Hot
 
     /*Metodo privado para obtener un paquete turistico con un servicio adicional
     [Aplicacion de los principio DRY Y KISS] */
-    private HotelModel obtenerProdcutoConServicio(Long idHotel, Long idServicio) {
+    private HotelModel obtenerProductoConServicio(Long idHotel, Long idServicio) {
         HotelModel paquete = hotelRepository.findById(idHotel)
                 .orElseThrow(() -> new BusinessException("Hotel con id " + idHotel + " no encontrado"));
 

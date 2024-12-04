@@ -1,11 +1,21 @@
 package com.viajaYa.viajaYa.models.dtos;
 
+import com.viajaYa.viajaYa.services.patterns.builder.UsuarioBuilder;
+
 public class UsuarioDTO {
     private String  nombre;
     private String  identificacion;
     private String  direccion;
     private String  correoElectronico;
     private int     rol;
+
+    public UsuarioDTO(UsuarioBuilder builder) {
+        this.nombre = builder.nombre;
+        this.identificacion = builder.identificacion;
+        this.direccion = builder.direccion;
+        this.correoElectronico = builder.correoElectronico;
+        this.rol = builder.rol;
+    }
 
     public String getNombre() {
         return nombre;

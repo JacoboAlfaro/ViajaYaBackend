@@ -102,7 +102,7 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
     @Override
     @Transactional
     public VueloDTO addServicioAdicional(Long idVuelo, Long idServicio){
-        VueloModel vuelo = obtenerProdcutoConServicio(idVuelo, idServicio);
+        VueloModel vuelo = obtenerProductoConServicio(idVuelo, idServicio);
 
         if (vuelo.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
             throw new BusinessException("El servicio adicional con id " + idServicio + " ya se encuentra en el vuelo");
@@ -116,7 +116,7 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
     @Override
     @Transactional
     public VueloDTO removeServicioAdicional(Long idVuelo, Long idServicio) {
-        VueloModel vuelo = obtenerProdcutoConServicio(idVuelo, idServicio);
+        VueloModel vuelo = obtenerProductoConServicio(idVuelo, idServicio);
 
         if (!vuelo.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
             throw new BusinessException("El servicio adicional con id " + idServicio + " no está asociado al vuelo");
@@ -129,7 +129,7 @@ public class VueloService implements IVueloService, IProductoServicioService<Vue
 
     /*Metodo privado para obtener un paquete turistico con un servicio adicional
     [Aplicacion de los principio DRY Y KISS] */
-    private VueloModel obtenerProdcutoConServicio(Long idVuelo, Long idServicio) {
+    private VueloModel obtenerProductoConServicio(Long idVuelo, Long idServicio) {
         VueloModel vuelo = vueloRepository.findById(idVuelo)
                 .orElseThrow(() -> new BusinessException("Vuelo con id " + idVuelo + " no encontrado"));
 

@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.services.mappers;
 
+import com.viajaYa.viajaYa.services.patterns.builder.UsuarioBuilder;
 import org.springframework.stereotype.Component;
 
 import com.viajaYa.viajaYa.models.UsuarioModel;
@@ -22,12 +23,13 @@ public class UsuarioDTOMapper implements IMapper<UsuarioDTO, UsuarioModel>{
 
     @Override
     public UsuarioDTO toDto(UsuarioModel model) {
-        UsuarioDTO dto = new UsuarioDTO(); //[Aplicando principio Creador]
-        dto.setNombre(model.getNombre());
-        dto.setIdentificacion(model.getIdentificacion());
-        dto.setDireccion(model.getDireccion());
-        dto.setCorreoElectronico(model.getCorreoElectronico());
-        dto.setRol(model.getRol());
+        UsuarioDTO dto = new UsuarioBuilder() //Patron Builder
+                .setNombre(model.getNombre())
+                .setIdentificacion(model.getIdentificacion())
+                .setDireccion(model.getDireccion())
+                .setCorreoElectronico(model.getCorreoElectronico())
+                .setRol(model.getRol())
+                .build();
         return dto;
     }
 }

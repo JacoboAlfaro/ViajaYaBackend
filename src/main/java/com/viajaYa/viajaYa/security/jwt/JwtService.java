@@ -1,5 +1,6 @@
 package com.viajaYa.viajaYa.security.jwt;
 
+import com.viajaYa.viajaYa.services.patterns.singleton.GlobalAppConfigSingleton;
 import com.viajaYa.viajaYa.utils.exceptions.TokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +22,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "NjYzYmFiZDIwMTktY2FhMi00YmMwLTk2ZjAtN2M4Mzc2MGQzN2U0";
+
+    private static final String SECRET_KEY = GlobalAppConfigSingleton.getInstance().getApiKey();// [Aplica patrón SINGLETON]
 
     public String getToken(UserDetails user) {
         Map<String, Object> claims = new HashMap<>();

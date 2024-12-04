@@ -6,7 +6,6 @@ import com.viajaYa.viajaYa.models.PaqueteTuristicoModel;
 import com.viajaYa.viajaYa.models.VueloModel;
 import com.viajaYa.viajaYa.models.dtos.PaqueteTuristicoResponseDTO;
 import com.viajaYa.viajaYa.models.enums.TipoProdcuto;
-import com.viajaYa.viajaYa.models.singletons.Productos;
 import com.viajaYa.viajaYa.repositories.IPaqueteTuristicoRepository;
 import com.viajaYa.viajaYa.repositories.IServicioAdicionalRepository;
 import com.viajaYa.viajaYa.services.interfaces.*;
@@ -122,7 +121,7 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     @Override
     @Transactional
     public PaqueteTuristicoResponseDTO addServicioAdicional(Long idPaquete, Long idServicio){
-        PaqueteTuristicoModel paquete = obtenerProdcutoConServicio(idPaquete, idServicio);
+        PaqueteTuristicoModel paquete = obtenerProductoConServicio(idPaquete, idServicio);
 
         if (paquete.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
             throw new BusinessException("El servicio adicional con id " + idServicio + " ya se encuentra en el paquete turístico");
@@ -136,7 +135,7 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     @Override
     @Transactional
     public PaqueteTuristicoResponseDTO removeServicioAdicional(Long idPaquete, Long idServicio) {
-        PaqueteTuristicoModel paquete = obtenerProdcutoConServicio(idPaquete, idServicio);
+        PaqueteTuristicoModel paquete = obtenerProductoConServicio(idPaquete, idServicio);
 
         if (!paquete.getServiciosAdicionales().contains(servicioAdicionalRepository.getReferenceById(idServicio))) {
             throw new BusinessException("El servicio adicional con id " + idServicio + " no está asociado al paquete turístico");
@@ -148,8 +147,8 @@ public class PaqueteTuristicoService implements IPaqueteTuristicoService, IProdu
     }
 
     /*Metodo privado para obtener un paquete turistico con un servicio adicional
-    [Aplicacion de los principio DRY Y KISS] */
-    private PaqueteTuristicoModel obtenerProdcutoConServicio(Long idPaquete, Long idServicio) {
+    [Aplicacion principio DRY] */
+    private PaqueteTuristicoModel obtenerProductoConServicio(Long idPaquete, Long idServicio) {
         PaqueteTuristicoModel paquete = paqueteTuristicoRepository.findById(idPaquete)
                 .orElseThrow(() -> new BusinessException("Paquete turístico con id " + idPaquete + " no encontrado"));
 

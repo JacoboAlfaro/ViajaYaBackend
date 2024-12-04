@@ -3,7 +3,7 @@ package com.viajaYa.viajaYa.services;
 import com.viajaYa.viajaYa.models.ReseniaModel;
 import com.viajaYa.viajaYa.models.dtos.ReseniaDTO;
 import com.viajaYa.viajaYa.models.dtos.ReseniaRequestDTO;
-import com.viajaYa.viajaYa.models.singletons.Productos;
+import com.viajaYa.viajaYa.services.patterns.singleton.Productos;
 import com.viajaYa.viajaYa.repositories.IProductoRepository;
 import com.viajaYa.viajaYa.repositories.IReseniaRepository;
 import com.viajaYa.viajaYa.services.interfaces.IReseniaService;

@@ -1,4 +1,4 @@
-package com.viajaYa.viajaYa.models.singletons;
+package com.viajaYa.viajaYa.services.patterns.singleton;
 
 import com.viajaYa.viajaYa.models.ProductoModel;
 import com.viajaYa.viajaYa.repositories.IProductoRepository;

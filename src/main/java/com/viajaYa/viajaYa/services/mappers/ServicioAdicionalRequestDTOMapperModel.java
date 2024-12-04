@@ -2,6 +2,7 @@ package com.viajaYa.viajaYa.services.mappers;
 
 import com.viajaYa.viajaYa.models.ServicioAdicionalModel;
 import com.viajaYa.viajaYa.models.dtos.ServicioAdicionalRequestDTO;
+import com.viajaYa.viajaYa.services.patterns.builder.ServicioAdicionalRequestBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class ServicioAdicionalRequestDTOMapperModel implements IMapper<ServicioA
 
     @Override
     public ServicioAdicionalModel toEntity(ServicioAdicionalRequestDTO dto) {
-        ServicioAdicionalModel entity = new ServicioAdicionalModel();
+        ServicioAdicionalModel entity = new ServicioAdicionalModel(); //[Aplicando principio Creador]
         entity.setId(dto.getId());
         entity.setNombreServicio(dto.getNombreServicio());
         entity.setDescripcion(dto.getDescripcion());
@@ -32,13 +33,14 @@ public class ServicioAdicionalRequestDTOMapperModel implements IMapper<ServicioA
             return null;
         }
 
-        ServicioAdicionalRequestDTO dto = new ServicioAdicionalRequestDTO();
-        dto.setId(entity.getId());
-        dto.setNombreServicio(entity.getNombreServicio());
-        dto.setDescripcion(entity.getDescripcion());
-        dto.setTerminosCondiciones(entity.getTerminosCondiciones());
-        dto.setPrecio(entity.getPrecio());
-        dto.setCategoriaServicio(entity.getCategoriaServicio());
+        ServicioAdicionalRequestDTO dto = new ServicioAdicionalRequestBuilder() //[Aplicando principio Creador y Builder]
+                .id(entity.getId())
+                .nombreServicio(entity.getNombreServicio())
+                .descripcion(entity.getDescripcion())
+                .terminosCondiciones(entity.getTerminosCondiciones())
+                .precio(entity.getPrecio())
+                .categoriaServicio(entity.getCategoriaServicio())
+                .build();
         return dto;
     }
 }
