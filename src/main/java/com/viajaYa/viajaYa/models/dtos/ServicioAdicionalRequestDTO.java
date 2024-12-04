@@ -13,6 +13,9 @@ public class ServicioAdicionalRequestDTO {
     private float precio;
     private String categoriaServicio;
 
+    public ServicioAdicionalRequestDTO() {
+    }
+
     public ServicioAdicionalRequestDTO(ServicioAdicionalRequestBuilder builder) {
         this.id = builder.id;
         this.nombreServicio = builder.nombreServicio;

@@ -30,7 +30,7 @@ public class ServicioAdicionalController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<List<ServicioAdicionalDTO>>> getPaquetesTuristicos(){
+    public ResponseEntity<ApiResponse<List<ServicioAdicionalDTO>>> getServiciosAdicionales(){
         List<ServicioAdicionalDTO> servicios = this.servicioAdicionalService.getServicios();
         ApiResponse<List<ServicioAdicionalDTO>> response = new ApiResponse<>(servicios);
         return ResponseEntity.ok(response);
@@ -38,7 +38,7 @@ public class ServicioAdicionalController {
 
     @GetMapping(path = "/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<ServicioAdicionalDTO>> getPaqueteTuristico(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponse<ServicioAdicionalDTO>> getServicioAdicional(@PathVariable("id") Long id){
         ServicioAdicionalDTO servicio = this.servicioAdicionalService.getServicioById(id).get();
         ApiResponse<ServicioAdicionalDTO> response = new ApiResponse<>(servicio);
         return ResponseEntity.ok(response);
@@ -46,7 +46,7 @@ public class ServicioAdicionalController {
 
     @PostMapping
     @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
-    public ResponseEntity<ApiResponse<ServicioAdicionalModel>> savePaqueteTuristico(@RequestBody ServicioAdicionalRequestDTO dto){
+    public ResponseEntity<ApiResponse<ServicioAdicionalModel>> saveServicioAdicional(@RequestBody ServicioAdicionalRequestDTO dto){
         ServicioAdicionalModel servicio = this.servicioAdicionalService.saveServicio(mapper.toEntity(dto));
         ApiResponse<ServicioAdicionalModel> response =  new ApiResponse<>(servicio);
         return ResponseEntity.ok(response);
@@ -54,7 +54,7 @@ public class ServicioAdicionalController {
 
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
-    public ResponseEntity<ApiResponse<ServicioAdicionalModel>> updatePaqueteTuristico(@RequestBody ServicioAdicionalRequestDTO request,
+    public ResponseEntity<ApiResponse<ServicioAdicionalModel>> updateServicioAdicional(@RequestBody ServicioAdicionalRequestDTO request,
                                                                                      @PathVariable("id") Long id){
         ServicioAdicionalModel servicio = this.servicioAdicionalService.updateServicioById(mapper.toEntity(request), id);
         ApiResponse<ServicioAdicionalModel> response = new ApiResponse<>(servicio);
@@ -63,7 +63,7 @@ public class ServicioAdicionalController {
 
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
-    public ResponseEntity<ApiResponse<String>> deletePaqueteTuristico(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponse<String>> deleteServicioAdicional(@PathVariable("id") Long id){
         boolean respuesta = this.servicioAdicionalService.deleteServicioById(id);
         ApiResponse<String> response = new ApiResponse<>("Se borró el servicio con id " + id);
         return ResponseEntity.ok(response);

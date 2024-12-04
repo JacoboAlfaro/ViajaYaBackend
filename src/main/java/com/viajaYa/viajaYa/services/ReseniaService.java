@@ -30,7 +30,7 @@ public class ReseniaService implements IReseniaService {
     IMapper<ReseniaRequestDTO, ReseniaModel> requestMapper;
     @Autowired
     IProductoRepository productoRepository;
-    //Buscando singleton
+    //Patron singleton
     Productos productos = Productos.getInstance(productoRepository);
 
     public ArrayList<ReseniaModel> getResenias(){
@@ -71,6 +71,9 @@ public class ReseniaService implements IReseniaService {
         Optional<ReseniaModel> resenia = reseniaRepository.findById(id);
         if(resenia.isEmpty()){
             throw new BusinessException("Resenia con id " + id + " no encontrado");
+        }
+        if(request.getCalificacion() < 0 || request.getCalificacion() > 5){
+            throw new BusinessException("La calificación debe estar entre 0 y 5");
         }
 
         ReseniaModel reseniaActualizada = resenia.get();

@@ -29,6 +29,8 @@ public class FacturaService  implements IFacturaService {
     IFacturaRepository facturaRepository;
     @Autowired
     IReservaRepository reservaRepository;
+    @Autowired
+    FacturaFactory facturaFactory;
 
     @Autowired
     IMapper<FacturaDTO, FacturaModel> mapper;
@@ -36,7 +38,7 @@ public class FacturaService  implements IFacturaService {
     @Override
     public FacturaDTO generateFactura(FacturaDTO facturad) {
         //[Aplicando patron factory method]
-        FacturaModel factura = FacturaFactory.crearFactura(facturad);
+        FacturaModel factura = facturaFactory.crearFactura(facturad);
 
         String xml = convertirFacturaToXML(factura);
         factura.setXml(xml);

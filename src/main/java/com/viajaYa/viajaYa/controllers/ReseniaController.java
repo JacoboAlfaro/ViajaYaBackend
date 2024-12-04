@@ -64,7 +64,7 @@ public class ReseniaController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{usuarioId}")
+    @PostMapping()
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<ReseniaDTO>> createResenia(@RequestBody ReseniaRequestDTO resenia){
         ReseniaModel reseniaCreado = this.reseniaService.saveResenia(resenia);

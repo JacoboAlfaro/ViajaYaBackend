@@ -2,16 +2,25 @@ package com.viajaYa.viajaYa.services.patterns.factory;
 
 import com.viajaYa.viajaYa.models.FacturaModel;
 import com.viajaYa.viajaYa.models.dtos.FacturaDTO;
+import com.viajaYa.viajaYa.services.interfaces.IReservaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class FacturaFactory {
-    public static FacturaModel crearFactura(FacturaDTO facturaDTO) {
+
+    @Autowired
+    private IReservaService reservaService;
+
+    public FacturaModel crearFactura(FacturaDTO facturaDTO) {
         FacturaModel factura = new FacturaModel();
         factura.setFecha(new Date());
         factura.setTotal(facturaDTO.getTotal());
         factura.setMetodoPago(facturaDTO.getMetodoPago());
         factura.setEstadoPago(facturaDTO.getEstadoPago());
+        factura.setReserva(reservaService.getReservaById(facturaDTO.getIdReserva()).get());
         return factura;
     }
 }

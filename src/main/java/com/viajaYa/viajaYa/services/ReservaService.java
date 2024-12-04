@@ -148,7 +148,7 @@ public class ReservaService implements IReservaService {
     @Override
     public List<Integer> calcularTotalPorReserva(Long idReserva) {
         ReservaModel reserva = reservaRepository.findById(idReserva)
-                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+                .orElseThrow(() -> new BusinessException("Reserva no encontrada"));
 
         int totalHoteles = contarHoteles(reserva);
         int totalVuelos = contarVuelos(reserva);

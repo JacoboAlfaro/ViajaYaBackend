@@ -42,7 +42,7 @@ public class ReservaController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole(@roles.ROLE_ADMIN)")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<ReservaResponseDTO>> saveReserva(@RequestBody ReservaDTO dto){
         ReservaModel reserva = this.reservaService.saveReserva(dto);
         ApiResponse<ReservaResponseDTO> response =  new ApiResponse<>(mapper.toDto(reserva));

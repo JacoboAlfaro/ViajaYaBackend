@@ -15,6 +15,9 @@ public class ReseniaRequestDTO {
     private int idReferencia;
     private Long idUsuario;
 
+    public ReseniaRequestDTO() {
+    }
+
     public ReseniaRequestDTO(ReseniaRequestBuilder builder) {
         this.id = builder.id;
         this.fecha = builder.fecha;
