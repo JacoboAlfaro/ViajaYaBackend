@@ -104,7 +104,7 @@ public class VueloModel {
         this.claseServicio = claseServicio;
     }
     public boolean isEquipaje() {
-        return equipaje;
+        return this.equipaje;
     }
     public void setEquipaje(boolean equipaje) {
         this.equipaje = equipaje;

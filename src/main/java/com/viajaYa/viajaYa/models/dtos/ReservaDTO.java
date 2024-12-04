@@ -3,7 +3,7 @@ package com.viajaYa.viajaYa.models.dtos;
 import java.util.Date;
 import java.util.List;
 
-public class ReservaDTO {
+public class    ReservaDTO {
     private Long id;
     private boolean estado;
     private Long idUsuario;
@@ -85,4 +85,5 @@ public class ReservaDTO {
     public void setFactura(FacturaDTO factura) {
         this.factura = factura;
     }
+
 }

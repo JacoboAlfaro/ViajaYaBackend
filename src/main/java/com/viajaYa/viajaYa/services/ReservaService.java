@@ -7,6 +7,9 @@ import com.viajaYa.viajaYa.repositories.IUsuarioRepository;
 import com.viajaYa.viajaYa.services.interfaces.IHotelService;
 import com.viajaYa.viajaYa.services.interfaces.*;
 import com.viajaYa.viajaYa.services.mappers.IMapper;
+import com.viajaYa.viajaYa.services.patterns.iterator.HotelIterator;
+import com.viajaYa.viajaYa.services.patterns.iterator.PaqueteIterator;
+import com.viajaYa.viajaYa.services.patterns.iterator.VueloIterator;
 import com.viajaYa.viajaYa.utils.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,6 +143,51 @@ public class ReservaService implements IReservaService {
         UsuarioModel usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new BusinessException("Usuario no encontrado con id " + idUsuario));
         return reservaRepository.findByUsuario(usuario);
+    }
+
+    @Override
+    public List<Integer> calcularTotalPorReserva(Long idReserva) {
+        ReservaModel reserva = reservaRepository.findById(idReserva)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+
+        int totalHoteles = contarHoteles(reserva);
+        int totalVuelos = contarVuelos(reserva);
+        int totalPaquetes = contarPaquetes(reserva);
+
+        return List.of(totalPaquetes, totalVuelos, totalHoteles);
+    }
+
+    //[Se aplica patron Iterator]
+    private int contarHoteles(ReservaModel reserva) {
+        HotelIterator hotelIterator = new HotelIterator(reserva.getHoteles());
+        int count = 0;
+        while (hotelIterator.hasNext()) {
+            hotelIterator.next();
+            count++;
+        }
+        return count;
+    }
+
+    //[Se aplica patron Iterator]
+    private int contarVuelos(ReservaModel reserva) {
+        VueloIterator vueloIterator = new VueloIterator(reserva.getVuelos());
+        int count = 0;
+        while (vueloIterator.hasNext()) {
+            vueloIterator.next();
+            count++;
+        }
+        return count;
+    }
+
+    //[Se aplica patron Iterator]
+    private int contarPaquetes(ReservaModel reserva) {
+        PaqueteIterator paqueteIterator = new PaqueteIterator(reserva.getPaquetesTuristicos());
+        int count = 0;
+        while (paqueteIterator.hasNext()) {
+            paqueteIterator.next();
+            count++;
+        }
+        return count;
     }
 
 }

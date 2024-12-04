@@ -16,4 +16,5 @@ public interface IReservaService {
     public List<ReservaModel> getReservasByUsuario(Long idUsuario);
     public boolean confirmarReserva(Long idReserva);
     List<ReservaModel> getHistorialReservasByUsuario(Long idUsuario);
+    public List<Integer> calcularTotalPorReserva(Long id);
 }
